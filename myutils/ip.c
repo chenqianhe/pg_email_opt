@@ -63,23 +63,31 @@ is_valid_ipv6_segment(const char *seg, int len)
     return true;
 }
 
+
 static bool
 is_valid_ipv6(const char *ipv6_str)
 {
     int seg_len;
     int segments = 0;
     bool has_double_colon = false;
+    const char *p = ipv6_str;
+    const char *seg_start;
 
     /* Empty string is invalid */
     if (!ipv6_str || *ipv6_str == '\0')
         return false;
 
-    const char *p = ipv6_str;
-    const char *seg_start = p;
-
     /* Skip "IPv6:" prefix if present */
     if (strncmp(p, "IPv6:", 5) == 0)
         p += 5;
+    seg_start = p;
+
+    /* Handle first character being : (for ::) */
+    if (*p == ':' && *(p + 1) == ':') {
+        has_double_colon = true;
+        p += 2;
+        seg_start = p;
+    }
 
     /* Process each character */
     while (*p)
@@ -94,6 +102,8 @@ is_valid_ipv6(const char *ipv6_str)
                     return false;
                 segments++;
             }
+            else if (p > seg_start && *(p - 1) == ':' && has_double_colon)
+                return false;  /* Empty segment not part of :: */
 
             /* Handle double colon */
             if (*(p + 1) == ':')
@@ -103,8 +113,6 @@ is_valid_ipv6(const char *ipv6_str)
                 has_double_colon = true;
                 p++;
             }
-            else if (p == ipv6_str || *(p - 1) == ':')  /* No empty segments unless :: */
-                return false;
 
             seg_start = p + 1;
         }
@@ -120,18 +128,18 @@ is_valid_ipv6(const char *ipv6_str)
         segments++;
     }
 
-    /* Check total number of segments */
+    /* Check total number of segments with :: expansion */
     if (has_double_colon)
     {
-        /* With ::, we can have fewer segments as :: expands to multiple 0s */
-        if (segments > 7)
+        /* With ::, total segments plus expanded 0s must equal 8 */
+        int expanded = 8 - segments;
+        if (expanded < 1)  /* Must expand to at least one segment */
             return false;
     }
-    else
+    else if (segments != 8)
     {
-        /* Without ::, we must have exactly 8 segments */
-        if (segments != 8)
-            return false;
+        /* Without ::, must have exactly 8 segments */
+        return false;
     }
 
     return true;
