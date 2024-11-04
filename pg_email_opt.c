@@ -239,7 +239,7 @@ PG_FUNCTION_INFO_V1(email_addr_out);
 Datum
 email_addr_out(PG_FUNCTION_ARGS)
 {
-    EMAIL_ADDR   *email = PG_GETARG_EMAIL_ADDR_P(0);
+    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_P(0);
 
     if (email == NULL)
         elog(ERROR, "null email address");
