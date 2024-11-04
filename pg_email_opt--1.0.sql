@@ -125,6 +125,12 @@ CREATE FUNCTION email_hash(email_addr)
 AS 'MODULE_PATHNAME'
 LANGUAGE C IMMUTABLE STRICT;
 
+-- B-tree comparison support
+CREATE FUNCTION email_addr_cmp(email_addr, email_addr)
+    RETURNS integer
+AS 'MODULE_PATHNAME'
+    LANGUAGE C IMMUTABLE STRICT;
+
 -- B-tree operator class for email_addr
 CREATE OPERATOR CLASS email_addr_ops
 DEFAULT FOR TYPE email_addr USING btree AS
@@ -233,6 +239,11 @@ CREATE OPERATOR ># (
     RESTRICT = scalargtsel,
     JOIN = scalargtjoinsel
 );
+
+CREATE FUNCTION email_addr_domain_cmp(email_addr, email_addr)
+    RETURNS integer
+AS 'MODULE_PATHNAME'
+    LANGUAGE C IMMUTABLE STRICT;
 
 -- Domain-based B-tree operator class
 CREATE OPERATOR CLASS email_addr_domain_ops

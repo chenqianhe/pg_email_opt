@@ -516,23 +516,27 @@ email_addr_normalize(PG_FUNCTION_ARGS)
         PointerGetDatum(email)));
 
     /* Calculate total size needed */
-    const size_t total_size = offsetof(EMAIL_ADDR, data) +
-                        VARSIZE_ANY_EXHDR(norm_local) +
-                        VARSIZE_ANY_EXHDR(norm_domain);
+    const size_t local_len = VARSIZE_ANY_EXHDR(norm_local);
+    const size_t domain_len = VARSIZE_ANY_EXHDR(norm_domain);
+    const size_t total_size = VARHDRSZ +
+                        offsetof(EMAIL_ADDR, data) +
+                        local_len + 1 +
+                        domain_len + 1;
 
     /* Allocate result */
     EMAIL_ADDR *result = palloc0(total_size);
     SET_VARSIZE(result, total_size);
-    result->local_len = VARSIZE_ANY_EXHDR(norm_local);
-    result->domain_len = VARSIZE_ANY_EXHDR(norm_domain);
 
-    /* Copy normalized parts */
-    memcpy(result->data,
-           VARDATA_ANY(norm_local),
-           VARSIZE_ANY_EXHDR(norm_local));
-    memcpy(result->data + result->local_len,
-           VARDATA_ANY(norm_domain),
-           VARSIZE_ANY_EXHDR(norm_domain));
+    /* Set lengths and offset */
+    result->local_len = local_len;
+    result->domain_len = domain_len;
+    result->domain_offset = local_len + 1;
+
+    /* Copy data and add null terminators */
+    memcpy(result->data, VARDATA_ANY(norm_local), local_len);
+    result->data[local_len] = '\0';
+    memcpy(result->data + result->domain_offset, VARDATA_ANY(norm_domain), domain_len);
+    result->data[result->domain_offset + domain_len] = '\0';
 
     /* Free intermediate results */
     pfree(norm_local);
