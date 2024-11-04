@@ -6,19 +6,32 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Find PostgreSQL package
-find_package(PostgreSQL REQUIRED)
-if(PostgreSQL_FOUND)
-    message(STATUS "Found PostgreSQL version: ${PostgreSQL_VERSION_STRING}")
-    message(STATUS "PostgreSQL include directories: ${PostgreSQL_INCLUDE_DIRS}")
-    message(STATUS "PostgreSQL libraries: ${PostgreSQL_LIBRARIES}")
-endif()
+find_package(PostgreSQL 16 REQUIRED)
 
-# Get PostgreSQL server include directory
+# Get PostgreSQL specific directories using pg_config
 execute_process(
         COMMAND pg_config --includedir-server
         OUTPUT_VARIABLE PG_SERVER_INCLUDEDIR
         OUTPUT_STRIP_TRAILING_WHITESPACE
 )
+
+execute_process(
+        COMMAND pg_config --pkglibdir
+        OUTPUT_VARIABLE PG_PKGLIBDIR
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+execute_process(
+        COMMAND pg_config --sharedir
+        OUTPUT_VARIABLE PG_SHAREDIR
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+# Print found paths for verification
+message(STATUS "PostgreSQL version: ${PostgreSQL_VERSION_STRING}")
+message(STATUS "PostgreSQL server include dir: ${PG_SERVER_INCLUDEDIR}")
+message(STATUS "PostgreSQL package lib dir: ${PG_PKGLIBDIR}")
+message(STATUS "PostgreSQL share dir: ${PG_SHAREDIR}")
 
 # Source files list
 set(SOURCE_FILES
@@ -64,18 +77,6 @@ set_target_properties(pg_email_opt PROPERTIES
 
 # Set output properties for the library
 set_target_properties(pg_email_opt PROPERTIES
-        PREFIX ""             # Remove 'lib' prefix
+        PREFIX ""  # Remove 'lib' prefix
         LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
 )
-
-## Installation rules for the shared library
-#install(TARGETS pg_email_opt
-#        LIBRARY DESTINATION ${PostgreSQL_PKGLIBDIR}
-#)
-#
-## Install SQL and control files (if they exist)
-#install(FILES
-#        pg_email_opt.control
-#        pg_email_opt--1.0.sql
-#        DESTINATION ${PostgreSQL_SHAREDIR}/extension
-#)
