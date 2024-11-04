@@ -64,40 +64,46 @@ typedef struct {
 EMAIL_ADDR *
 make_email_addr(const char *local_part, const char *domain)
 {
-    Size local_len = strlen(local_part);
-    Size domain_len = strlen(domain);
+    const Size local_len = strlen(local_part);
+    const Size domain_len = strlen(domain);
 
-    /* Calculate total size needed:
-     * - base struct size (header + offsets + length fields)
-     * - local_part length + null terminator
-     * - domain length + null terminator
-     */
+    /* Validate lengths */
+    if (local_len > 64)
+        ereport(ERROR,
+                (errcode(ERRCODE_STRING_DATA_RIGHT_TRUNCATION),
+                 errmsg("email local part too long"),
+                 errdetail("Maximum length is 64 characters.")));
+
+    if (domain_len > 255)
+        ereport(ERROR,
+                (errcode(ERRCODE_STRING_DATA_RIGHT_TRUNCATION),
+                 errmsg("email domain too long"),
+                 errdetail("Maximum length is 255 characters.")));
+
+    /* Calculate total size with proper alignment */
     const Size total_size = VARHDRSZ +
                      offsetof(EMAIL_ADDR, data) +
-                     local_len + 1 +
-                     domain_len + 1;
+                     local_len + 1 +  /* local part + null terminator */
+                     domain_len + 1;  /* domain + null terminator */
 
-    /* Allocate memory and zero it */
-    EMAIL_ADDR *result = palloc0(total_size);
+    /* Allocate and zero memory */
+    EMAIL_ADDR *result = (EMAIL_ADDR *) palloc0(total_size);
 
-    /* Set varlena length */
+    /* Set varlena header */
     SET_VARSIZE(result, total_size);
 
-    /* Set length fields */
+    /* Set lengths */
     result->local_len = local_len;
     result->domain_len = domain_len;
+    result->domain_offset = local_len + 1;  /* Position after local part's null terminator */
 
-    /* Set domain offset: local_part length + null terminator */
-    result->domain_offset = local_len + 1;
-
-    /* Copy data into structure:
-     * First the local-part, then null terminator,
-     * then domain, then null terminator
-     */
+    /* Copy local part */
     memcpy(result->data, local_part, local_len);
     result->data[local_len] = '\0';
-    memcpy(result->data + local_len + 1, domain, domain_len);
-    result->data[local_len + 1 + domain_len] = '\0';
+
+    /* Copy domain */
+    memcpy(result->data + result->domain_offset, domain, domain_len);
+    result->data[result->domain_offset + domain_len] = '\0';
 
     return result;
 }
@@ -239,36 +245,50 @@ PG_FUNCTION_INFO_V1(email_addr_out);
 Datum
 email_addr_out(PG_FUNCTION_ARGS)
 {
-    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_P(0);
+    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     if (email == NULL)
         elog(ERROR, "null email address");
 
-    /* Get email parts */
-    const char *local_part = get_local_part(email);
-    const char *domain = get_domain(email);
+    /* Debug: Print structure details */
+    elog(NOTICE, "Structure details:");
+    elog(NOTICE, "  varlena size: %d", VARSIZE(email));
+    elog(NOTICE, "  domain_offset: %d", email->domain_offset);
+    elog(NOTICE, "  local_len: %d", email->local_len);
+    elog(NOTICE, "  domain_len: %d", email->domain_len);
 
-    /* Calculate total length needed: local_part + @ + domain + null terminator */
+    /* Debug: Print raw data */
+    elog(NOTICE, "Raw data (hex):");
+    for (int i = 0; i < VARSIZE(email); i++) {
+        elog(NOTICE, "  byte[%d]: %02x", i, ((unsigned char *)email)[i]);
+    }
+
+    /* Get parts with bounds checking */
+    const char *local_part = get_local_part(email);
+    elog(NOTICE, "Local part pointer: %p", (void*)local_part);
+    elog(NOTICE, "Local part content: '%.*s'", email->local_len, local_part);
+
+    const char *domain = get_domain(email);
+    elog(NOTICE, "Domain pointer: %p", (void*)domain);
+    elog(NOTICE, "Domain content: '%.*s'", email->domain_len, domain);
+
+    /* Calculate total length needed */
     const int total_len = email->local_len + 1 + email->domain_len + 1;
 
-    /* Allocate result buffer */
+    /* Allocate and construct result */
     char *result = palloc(total_len);
 
-    /* Copy local part */
+    /* Copy with explicit lengths */
     memcpy(result, local_part, email->local_len);
-
-    /* Add @ separator */
     result[email->local_len] = '@';
-
-    /* Copy domain */
     memcpy(result + email->local_len + 1, domain, email->domain_len);
-
-    /* Add null terminator */
     result[total_len - 1] = '\0';
+
+    /* Debug: Print final result */
+    elog(NOTICE, "Final result: '%s'", result);
 
     PG_RETURN_CSTRING(result);
 }
-
 /*
  * Compare two email addresses
  * Returns -1 if addr1 < addr2, 0 if equal, 1 if addr1 > addr2
@@ -388,18 +408,22 @@ PG_FUNCTION_INFO_V1(email_addr_get_local_part);
 Datum
 email_addr_get_local_part(PG_FUNCTION_ARGS)
 {
-    EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_P(0);
+    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);  // 使用 PP 而不是 P
 
     /* Handle NULL input */
     if (email == NULL)
         PG_RETURN_NULL();
 
-    /* Allocate result text with VARHDRSZ */
-    text *result = palloc(VARHDRSZ + email->local_len);
+    /* Debug log */
+    elog(DEBUG1, "get_local_part: local_len=%d", email->local_len);
+
+    /* Allocate result text */
+    text *result = (text *) palloc(VARHDRSZ + email->local_len);
     SET_VARSIZE(result, VARHDRSZ + email->local_len);
 
-    /* Copy local part into result */
-    memcpy(VARDATA(result), get_local_part(email), email->local_len);
+    /* Copy data with explicit length */
+    const char *local_part = get_local_part(email);
+    memcpy(VARDATA(result), local_part, email->local_len);
 
     PG_RETURN_TEXT_P(result);
 }
@@ -411,18 +435,22 @@ PG_FUNCTION_INFO_V1(email_addr_get_domain);
 Datum
 email_addr_get_domain(PG_FUNCTION_ARGS)
 {
-    EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_P(0);
+    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);  // 使用 PP 而不是 P
 
     /* Handle NULL input */
     if (email == NULL)
         PG_RETURN_NULL();
 
+    /* Debug log */
+    elog(DEBUG1, "get_domain: domain_len=%d", email->domain_len);
+
     /* Allocate result text */
-    text *result = palloc(VARHDRSZ + email->domain_len);
+    text *result = (text *) palloc(VARHDRSZ + email->domain_len);
     SET_VARSIZE(result, VARHDRSZ + email->domain_len);
 
-    /* Copy domain into result */
-    memcpy(VARDATA(result), get_domain(email), email->domain_len);
+    /* Copy data with explicit length */
+    const char *domain = get_domain(email);
+    memcpy(VARDATA(result), domain, email->domain_len);
 
     PG_RETURN_TEXT_P(result);
 }
