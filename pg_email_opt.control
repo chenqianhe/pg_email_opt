@@ -1,0 +1,5 @@
+comment = 'Optimized email data type with domain-based indexing and filtering'
+default_version = '1.0'
+module_pathname = '$libdir/pg_email_opt'
+relocatable = false
+superuser = true
