@@ -106,7 +106,7 @@ make_email_addr(const char *local_part, const char *domain)
  * Returns pointer to local-part of email address.
  * Result is null-terminated string.
  */
-char *
+const char *
 get_local_part(const EMAIL_ADDR *addr)
 {
     Assert(addr != NULL);
@@ -117,7 +117,7 @@ get_local_part(const EMAIL_ADDR *addr)
  * Returns pointer to domain part of email address.
  * Result is null-terminated string.
  */
-char *
+const char *
 get_domain(const EMAIL_ADDR *addr)
 {
     Assert(addr != NULL);
@@ -589,34 +589,26 @@ email_addr_normalize_text(PG_FUNCTION_ARGS)
  * Check if two email addresses are equal after normalization
  */
 PG_FUNCTION_INFO_V1(email_addr_normalize_eq);
-
 Datum
 email_addr_normalize_eq(PG_FUNCTION_ARGS)
 {
     const EMAIL_ADDR *addr1 = PG_GETARG_EMAIL_ADDR_PP(0);
     const EMAIL_ADDR *addr2 = PG_GETARG_EMAIL_ADDR_PP(1);
-
     /* Handle NULLs */
     if (addr1 == NULL || addr2 == NULL)
     {
-        if (addr1 == NULL && addr2 == NULL)
-            PG_RETURN_BOOL(true);
-        PG_RETURN_BOOL(false);
+        PG_RETURN_NULL();
     }
-
     /* Normalize both addresses */
     EMAIL_ADDR *norm1 = (EMAIL_ADDR *) DatumGetPointer(DirectFunctionCall1(email_addr_normalize,
                                                                            PointerGetDatum(addr1)));
     EMAIL_ADDR *norm2 = (EMAIL_ADDR *) DatumGetPointer(DirectFunctionCall1(email_addr_normalize,
                                                                            PointerGetDatum(addr2)));
-
     /* Compare normalized forms */
     const bool result = email_addr_equals(norm1, norm2);
-
     /* Free normalized addresses */
     pfree(norm1);
     pfree(norm2);
-
     PG_RETURN_BOOL(result);
 }
 
@@ -627,7 +619,7 @@ PG_FUNCTION_INFO_V1(email_addr_cast_to_text);
 Datum
 email_addr_cast_to_text(PG_FUNCTION_ARGS)
 {
-    EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_P(0);
+    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_P(0);
 
     if (email == NULL)
         PG_RETURN_NULL();
