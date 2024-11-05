@@ -5,3 +5,5 @@ cp pg_email_opt--1.0.sql $(pg_config --sharedir)/extension/
 chmod 755 $(pg_config --pkglibdir)/pg_email_opt.so
 chmod 644 $(pg_config --sharedir)/extension/pg_email_opt.control
 chmod 644 $(pg_config --sharedir)/extension/pg_email_opt--1.0.sql
+
+sudo service postgresql restart
