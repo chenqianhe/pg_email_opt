@@ -289,6 +289,7 @@ email_addr_out(PG_FUNCTION_ARGS)
 
     PG_RETURN_CSTRING(result);
 }
+
 /*
  * Compare two email addresses
  * Returns -1 if addr1 < addr2, 0 if equal, 1 if addr1 > addr2
@@ -391,7 +392,7 @@ PG_FUNCTION_INFO_V1(email_hash);
 Datum
 email_hash(PG_FUNCTION_ARGS)
 {
-    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_P(0);
+    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
     uint32 hash = email_addr_hash(email);
 
     /* PostgreSQL hash indexes reserve 0 and 0xFFFFFFFF */
@@ -408,7 +409,7 @@ PG_FUNCTION_INFO_V1(email_addr_get_local_part);
 Datum
 email_addr_get_local_part(PG_FUNCTION_ARGS)
 {
-    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);  // 使用 PP 而不是 P
+    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     /* Handle NULL input */
     if (email == NULL)
@@ -435,7 +436,7 @@ PG_FUNCTION_INFO_V1(email_addr_get_domain);
 Datum
 email_addr_get_domain(PG_FUNCTION_ARGS)
 {
-    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);  // 使用 PP 而不是 P
+    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     /* Handle NULL input */
     if (email == NULL)
@@ -462,7 +463,7 @@ PG_FUNCTION_INFO_V1(email_addr_normalized_local_part);
 Datum
 email_addr_normalized_local_part(PG_FUNCTION_ARGS)
 {
-    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_P(0);
+    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
     text *result;
     size_t result_len;
 
@@ -500,7 +501,7 @@ PG_FUNCTION_INFO_V1(email_addr_normalized_domain);
 Datum
 email_addr_normalized_domain(PG_FUNCTION_ARGS)
 {
-    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_P(0);
+    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     /* Handle NULL input */
     if (email == NULL)
@@ -531,7 +532,7 @@ PG_FUNCTION_INFO_V1(email_addr_normalize);
 Datum
 email_addr_normalize(PG_FUNCTION_ARGS)
 {
-    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_P(0);
+    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     /* Handle NULL input */
     if (email == NULL)
@@ -580,7 +581,7 @@ PG_FUNCTION_INFO_V1(email_addr_normalize_text);
 Datum
 email_addr_normalize_text(PG_FUNCTION_ARGS)
 {
-    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_P(0);
+    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     /* Handle NULL input */
     if (email == NULL)
@@ -593,7 +594,7 @@ email_addr_normalize_text(PG_FUNCTION_ARGS)
         PointerGetDatum(email)));
 
     /* Calculate total length including @ */
-    int total_len = VARSIZE_ANY_EXHDR(norm_local) + 1 + VARSIZE_ANY_EXHDR(norm_domain);
+    const int total_len = VARSIZE_ANY_EXHDR(norm_local) + 1 + VARSIZE_ANY_EXHDR(norm_domain);
 
     /* Allocate result text */
     text *result = palloc(VARHDRSZ + total_len);
@@ -651,7 +652,7 @@ PG_FUNCTION_INFO_V1(email_addr_cast_to_text);
 Datum
 email_addr_cast_to_text(PG_FUNCTION_ARGS)
 {
-    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_P(0);
+    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     if (email == NULL)
         PG_RETURN_NULL();
@@ -722,7 +723,7 @@ PG_FUNCTION_INFO_V1(email_addr_cast_to_name);
 Datum
 email_addr_cast_to_name(PG_FUNCTION_ARGS)
 {
-    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_P(0);
+    const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     if (email == NULL)
         PG_RETURN_NULL();
@@ -757,7 +758,7 @@ PG_FUNCTION_INFO_V1(name_cast_to_email_addr);
 Datum
 name_cast_to_email_addr(PG_FUNCTION_ARGS)
 {
-    Name name = PG_GETARG_NAME(0);
+    const Name name = PG_GETARG_NAME(0);
 
     if (name == NULL)
         PG_RETURN_NULL();
