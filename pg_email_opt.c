@@ -24,19 +24,19 @@ PG_MODULE_MAGIC;
  */
 typedef struct {
     /* varlena header for storing total struct length */
-    char        vl_len_[4];
+    char vl_len_[4];
 
     /* offset to where domain starts in data array */
-    uint16      domain_offset;
+    uint16 domain_offset;
 
     /* lengths of local-part and domain */
-    uint16      local_len;
-    uint16      domain_len;
+    uint16 local_len;
+    uint16 domain_len;
 
     /* actual data storage: [local_part]\0[domain]\0
      * both parts are null-terminated for easy string handling
      */
-    char        data[FLEXIBLE_ARRAY_MEMBER];
+    char data[FLEXIBLE_ARRAY_MEMBER];
 } EMAIL_ADDR;
 
 /*
@@ -62,29 +62,28 @@ typedef struct {
  * Note: The caller must ensure input strings are valid.
  */
 EMAIL_ADDR *
-make_email_addr(const char *local_part, const char *domain)
-{
+make_email_addr(const char *local_part, const char *domain) {
     const Size local_len = strlen(local_part);
     const Size domain_len = strlen(domain);
 
     /* Validate lengths */
     if (local_len > 64)
         ereport(ERROR,
-                (errcode(ERRCODE_STRING_DATA_RIGHT_TRUNCATION),
-                 errmsg("email local part too long"),
-                 errdetail("Maximum length is 64 characters.")));
+            (errcode(ERRCODE_STRING_DATA_RIGHT_TRUNCATION),
+                errmsg("email local part too long"),
+                errdetail("Maximum length is 64 characters.")));
 
     if (domain_len > 255)
         ereport(ERROR,
-                (errcode(ERRCODE_STRING_DATA_RIGHT_TRUNCATION),
-                 errmsg("email domain too long"),
-                 errdetail("Maximum length is 255 characters.")));
+            (errcode(ERRCODE_STRING_DATA_RIGHT_TRUNCATION),
+                errmsg("email domain too long"),
+                errdetail("Maximum length is 255 characters.")));
 
     /* Calculate total size with proper alignment */
     const Size total_size = VARHDRSZ +
-                     offsetof(EMAIL_ADDR, data) +
-                     local_len + 1 +  /* local part + null terminator */
-                     domain_len + 1;  /* domain + null terminator */
+                            offsetof(EMAIL_ADDR, data) +
+                            local_len + 1 + /* local part + null terminator */
+                            domain_len + 1; /* domain + null terminator */
 
     /* Allocate and zero memory */
     EMAIL_ADDR *result = (EMAIL_ADDR *) palloc0(total_size);
@@ -95,7 +94,7 @@ make_email_addr(const char *local_part, const char *domain)
     /* Set lengths */
     result->local_len = local_len;
     result->domain_len = domain_len;
-    result->domain_offset = local_len + 1;  /* Position after local part's null terminator */
+    result->domain_offset = local_len + 1; /* Position after local part's null terminator */
 
     /* Copy local part */
     memcpy(result->data, local_part, local_len);
@@ -113,8 +112,7 @@ make_email_addr(const char *local_part, const char *domain)
  * Result is null-terminated string.
  */
 const char *
-get_local_part(const EMAIL_ADDR *addr)
-{
+get_local_part(const EMAIL_ADDR *addr) {
     Assert(addr != NULL);
     return addr->data;
 }
@@ -124,8 +122,7 @@ get_local_part(const EMAIL_ADDR *addr)
  * Result is null-terminated string.
  */
 const char *
-get_domain(const EMAIL_ADDR *addr)
-{
+get_domain(const EMAIL_ADDR *addr) {
     Assert(addr != NULL);
     return addr->data + addr->domain_offset;
 }
@@ -136,8 +133,7 @@ get_domain(const EMAIL_ADDR *addr)
  * Caller is responsible for pfree'ing the result.
  */
 char *
-get_full_email(const EMAIL_ADDR *addr)
-{
+get_full_email(const EMAIL_ADDR *addr) {
     Assert(addr != NULL);
 
     /* Allocate memory for: local-part + @ + domain + null terminator */
@@ -159,8 +155,7 @@ get_full_email(const EMAIL_ADDR *addr)
  * Returns true if addresses are equal, false otherwise
  */
 bool
-email_addr_equals(const EMAIL_ADDR *addr1, const EMAIL_ADDR *addr2)
-{
+email_addr_equals(const EMAIL_ADDR *addr1, const EMAIL_ADDR *addr2) {
     /* Check for NULL inputs */
     if (!addr1 || !addr2)
         return false;
@@ -173,7 +168,7 @@ email_addr_equals(const EMAIL_ADDR *addr1, const EMAIL_ADDR *addr2)
 
     /* If domains are equal, compare local parts */
     cmp = compare_local_parts(get_local_part(addr1), addr1->local_len,
-                            get_local_part(addr2), addr2->local_len);
+                              get_local_part(addr2), addr2->local_len);
     if (cmp != 0)
         return false;
 
@@ -185,8 +180,7 @@ email_addr_equals(const EMAIL_ADDR *addr1, const EMAIL_ADDR *addr2)
  * for equivalent addresses according to RFC 5321/5322 rules
  */
 uint32
-email_addr_hash(const EMAIL_ADDR *addr)
-{
+email_addr_hash(const EMAIL_ADDR *addr) {
     /* Handle NULL input */
     if (!addr)
         return 0;
@@ -211,8 +205,7 @@ email_addr_hash(const EMAIL_ADDR *addr)
  * Handles escaped quotes and validates quote structure.
  */
 static const char *
-find_valid_at(const char *input_text)
-{
+find_valid_at(const char *input_text) {
     const char *at_pos = NULL;
     const char *p = input_text;
     bool in_quotes = false;
@@ -240,7 +233,7 @@ find_valid_at(const char *input_text)
     if (in_quotes) {
         ereport(ERROR,
                 (errcode(ERRCODE_INVALID_TEXT_REPRESENTATION),
-                 errmsg("unterminated quotes in email address: \"%s\"",
+                    errmsg("unterminated quotes in email address: \"%s\"",
                         input_text)));
     }
 
@@ -248,7 +241,7 @@ find_valid_at(const char *input_text)
     if (escaped) {
         ereport(ERROR,
                 (errcode(ERRCODE_INVALID_TEXT_REPRESENTATION),
-                 errmsg("invalid trailing backslash in email address: \"%s\"",
+                    errmsg("invalid trailing backslash in email address: \"%s\"",
                         input_text)));
     }
 
@@ -259,18 +252,18 @@ find_valid_at(const char *input_text)
  * Input function: text representation to internal format
  */
 PG_FUNCTION_INFO_V1(email_addr_in);
+
 Datum
-email_addr_in(PG_FUNCTION_ARGS)
-{
+email_addr_in(PG_FUNCTION_ARGS) {
     char *input_text = PG_GETARG_CSTRING(0);
 
     /* Find the @ character */
     const char *at_pos = find_valid_at(input_text);
     if (at_pos == NULL)
         ereport(ERROR,
-                (errcode(ERRCODE_INVALID_TEXT_REPRESENTATION),
-                 errmsg("invalid input syntax for type emailaddr: \"%s\"",
-                        input_text)));
+            (errcode(ERRCODE_INVALID_TEXT_REPRESENTATION),
+                errmsg("invalid input syntax for type emailaddr: \"%s\"",
+                    input_text)));
 
     /* Split the address and create a new email addr */
     char *local_part = pnstrdup(input_text, at_pos - input_text);
@@ -292,9 +285,9 @@ email_addr_in(PG_FUNCTION_ARGS)
  * Converts internal representation to standard email string format
  */
 PG_FUNCTION_INFO_V1(email_addr_out);
+
 Datum
-email_addr_out(PG_FUNCTION_ARGS)
-{
+email_addr_out(PG_FUNCTION_ARGS) {
     const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     if (email == NULL)
@@ -345,21 +338,20 @@ email_addr_out(PG_FUNCTION_ARGS)
  * Returns -1 if addr1 < addr2, 0 if equal, 1 if addr1 > addr2
  */
 PG_FUNCTION_INFO_V1(email_addr_cmp);
+
 Datum
-email_addr_cmp(PG_FUNCTION_ARGS)
-{
+email_addr_cmp(PG_FUNCTION_ARGS) {
     const EMAIL_ADDR *addr1 = PG_GETARG_EMAIL_ADDR_PP(0);
     const EMAIL_ADDR *addr2 = PG_GETARG_EMAIL_ADDR_PP(1);
 
     /* Handle NULLs */
-    if (addr1 == NULL)
-    {
+    if (addr1 == NULL) {
         if (addr2 == NULL)
-            PG_RETURN_INT32(0);    /* NULL == NULL */
-        PG_RETURN_INT32(-1);       /* NULL < non-NULL */
+            PG_RETURN_INT32(0); /* NULL == NULL */
+        PG_RETURN_INT32(-1); /* NULL < non-NULL */
     }
     if (addr2 == NULL)
-        PG_RETURN_INT32(1);        /* non-NULL > NULL */
+        PG_RETURN_INT32(1); /* non-NULL > NULL */
 
     /* First compare domains (case-insensitive) */
     int cmp = bounded_strcasecmp(get_domain(addr1), addr1->domain_len,
@@ -369,69 +361,69 @@ email_addr_cmp(PG_FUNCTION_ARGS)
 
     /* If domains are equal, compare local parts */
     cmp = compare_local_parts(get_local_part(addr1), addr1->local_len,
-                            get_local_part(addr2), addr2->local_len);
+                              get_local_part(addr2), addr2->local_len);
 
     PG_RETURN_INT32(cmp);
 }
 
 
 PG_FUNCTION_INFO_V1(email_addr_lt);
+
 Datum
-email_addr_lt(PG_FUNCTION_ARGS)
-{
+email_addr_lt(PG_FUNCTION_ARGS) {
     const int32 cmp = DatumGetInt32(DirectFunctionCall2(email_addr_cmp,
-                                                 PG_GETARG_DATUM(0),
-                                                 PG_GETARG_DATUM(1)));
+                                                        PG_GETARG_DATUM(0),
+                                                        PG_GETARG_DATUM(1)));
     PG_RETURN_BOOL(cmp < 0);
 }
 
 PG_FUNCTION_INFO_V1(email_addr_le);
+
 Datum
-email_addr_le(PG_FUNCTION_ARGS)
-{
+email_addr_le(PG_FUNCTION_ARGS) {
     const int32 cmp = DatumGetInt32(DirectFunctionCall2(email_addr_cmp,
-                                                 PG_GETARG_DATUM(0),
-                                                 PG_GETARG_DATUM(1)));
+                                                        PG_GETARG_DATUM(0),
+                                                        PG_GETARG_DATUM(1)));
     PG_RETURN_BOOL(cmp <= 0);
 }
 
 PG_FUNCTION_INFO_V1(email_addr_gt);
+
 Datum
-email_addr_gt(PG_FUNCTION_ARGS)
-{
+email_addr_gt(PG_FUNCTION_ARGS) {
     const int32 cmp = DatumGetInt32(DirectFunctionCall2(email_addr_cmp,
-                                                 PG_GETARG_DATUM(0),
-                                                 PG_GETARG_DATUM(1)));
+                                                        PG_GETARG_DATUM(0),
+                                                        PG_GETARG_DATUM(1)));
     PG_RETURN_BOOL(cmp > 0);
 }
 
 PG_FUNCTION_INFO_V1(email_addr_ge);
+
 Datum
-email_addr_ge(PG_FUNCTION_ARGS)
-{
+email_addr_ge(PG_FUNCTION_ARGS) {
     const int32 cmp = DatumGetInt32(DirectFunctionCall2(email_addr_cmp,
-                                                 PG_GETARG_DATUM(0),
-                                                 PG_GETARG_DATUM(1)));
+                                                        PG_GETARG_DATUM(0),
+                                                        PG_GETARG_DATUM(1)));
     PG_RETURN_BOOL(cmp >= 0);
 }
 
 PG_FUNCTION_INFO_V1(email_addr_eq);
+
 Datum
-email_addr_eq(PG_FUNCTION_ARGS)
-{
+email_addr_eq(PG_FUNCTION_ARGS) {
     const int32 cmp = DatumGetInt32(DirectFunctionCall2(email_addr_cmp,
-                                                     PG_GETARG_DATUM(0),
-                                                     PG_GETARG_DATUM(1)));
+                                                        PG_GETARG_DATUM(0),
+                                                        PG_GETARG_DATUM(1)));
     PG_RETURN_BOOL(cmp == 0);
 }
 
 PG_FUNCTION_INFO_V1(email_addr_ne);
+
 Datum
-email_addr_ne(PG_FUNCTION_ARGS)
-{
+email_addr_ne(PG_FUNCTION_ARGS) {
     const int32 cmp = DatumGetInt32(DirectFunctionCall2(email_addr_cmp,
-                                                     PG_GETARG_DATUM(0),
-                                                     PG_GETARG_DATUM(1)));
+                                                        PG_GETARG_DATUM(0),
+                                                        PG_GETARG_DATUM(1)));
     PG_RETURN_BOOL(cmp != 0);
 }
 
@@ -439,9 +431,9 @@ email_addr_ne(PG_FUNCTION_ARGS)
  * Hash function for email addresses to support hash indexes
  */
 PG_FUNCTION_INFO_V1(email_hash);
+
 Datum
-email_hash(PG_FUNCTION_ARGS)
-{
+email_hash(PG_FUNCTION_ARGS) {
     const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
     uint32 hash = email_addr_hash(email);
 
@@ -456,9 +448,9 @@ email_hash(PG_FUNCTION_ARGS)
  * Extract the local part from an email address
  */
 PG_FUNCTION_INFO_V1(email_addr_get_local_part);
+
 Datum
-email_addr_get_local_part(PG_FUNCTION_ARGS)
-{
+email_addr_get_local_part(PG_FUNCTION_ARGS) {
     const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     /* Handle NULL input */
@@ -483,9 +475,9 @@ email_addr_get_local_part(PG_FUNCTION_ARGS)
  * Extract the domain part from an email address
  */
 PG_FUNCTION_INFO_V1(email_addr_get_domain);
+
 Datum
-email_addr_get_domain(PG_FUNCTION_ARGS)
-{
+email_addr_get_domain(PG_FUNCTION_ARGS) {
     const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     /* Handle NULL input */
@@ -510,9 +502,9 @@ email_addr_get_domain(PG_FUNCTION_ARGS)
  * Get normalized local part (unquoted form if possible)
  */
 PG_FUNCTION_INFO_V1(email_addr_normalized_local_part);
+
 Datum
-email_addr_normalized_local_part(PG_FUNCTION_ARGS)
-{
+email_addr_normalized_local_part(PG_FUNCTION_ARGS) {
     const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
     text *result;
     size_t result_len;
@@ -525,15 +517,12 @@ email_addr_normalized_local_part(PG_FUNCTION_ARGS)
     const bool is_quoted = local_part[0] == '"' && local_part[email->local_len - 1] == '"';
 
     /* If quoted and can be unquoted, return unquoted form */
-    if (is_quoted && quoted_content_valid_as_unquoted(local_part, email->local_len))
-    {
-        result_len = email->local_len - 2;  /* remove quotes */
+    if (is_quoted && quoted_content_valid_as_unquoted(local_part, email->local_len)) {
+        result_len = email->local_len - 2; /* remove quotes */
         result = (text *) palloc(VARHDRSZ + result_len);
         SET_VARSIZE(result, VARHDRSZ + result_len);
         memcpy(VARDATA(result), local_part + 1, result_len);
-    }
-    else
-    {
+    } else {
         /* Return as-is */
         result_len = email->local_len;
         result = (text *) palloc(VARHDRSZ + result_len);
@@ -548,9 +537,9 @@ email_addr_normalized_local_part(PG_FUNCTION_ARGS)
  * Get normalized domain (always lowercase)
  */
 PG_FUNCTION_INFO_V1(email_addr_normalized_domain);
+
 Datum
-email_addr_normalized_domain(PG_FUNCTION_ARGS)
-{
+email_addr_normalized_domain(PG_FUNCTION_ARGS) {
     const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     /* Handle NULL input */
@@ -579,9 +568,9 @@ email_addr_normalized_domain(PG_FUNCTION_ARGS)
  * - local part is converted to lowercase for unquoted forms
  */
 PG_FUNCTION_INFO_V1(email_addr_normalize);
+
 Datum
-email_addr_normalize(PG_FUNCTION_ARGS)
-{
+email_addr_normalize(PG_FUNCTION_ARGS) {
     const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     /* Handle NULL input */
@@ -598,9 +587,9 @@ email_addr_normalize(PG_FUNCTION_ARGS)
     const size_t local_len = VARSIZE_ANY_EXHDR(norm_local);
     const size_t domain_len = VARSIZE_ANY_EXHDR(norm_domain);
     const size_t total_size = VARHDRSZ +
-                        offsetof(EMAIL_ADDR, data) +
-                        local_len + 1 +
-                        domain_len + 1;
+                              offsetof(EMAIL_ADDR, data) +
+                              local_len + 1 +
+                              domain_len + 1;
 
     /* Allocate result */
     EMAIL_ADDR *result = palloc0(total_size);
@@ -628,9 +617,9 @@ email_addr_normalize(PG_FUNCTION_ARGS)
  * Get normalized email as text
  */
 PG_FUNCTION_INFO_V1(email_addr_normalize_text);
+
 Datum
-email_addr_normalize_text(PG_FUNCTION_ARGS)
-{
+email_addr_normalize_text(PG_FUNCTION_ARGS) {
     const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     /* Handle NULL input */
@@ -672,14 +661,13 @@ email_addr_normalize_text(PG_FUNCTION_ARGS)
  * Check if two email addresses are equal after normalization
  */
 PG_FUNCTION_INFO_V1(email_addr_normalize_eq);
+
 Datum
-email_addr_normalize_eq(PG_FUNCTION_ARGS)
-{
+email_addr_normalize_eq(PG_FUNCTION_ARGS) {
     const EMAIL_ADDR *addr1 = PG_GETARG_EMAIL_ADDR_PP(0);
     const EMAIL_ADDR *addr2 = PG_GETARG_EMAIL_ADDR_PP(1);
     /* Handle NULLs */
-    if (addr1 == NULL || addr2 == NULL)
-    {
+    if (addr1 == NULL || addr2 == NULL) {
         PG_RETURN_NULL();
     }
     /* Normalize both addresses */
@@ -699,9 +687,9 @@ email_addr_normalize_eq(PG_FUNCTION_ARGS)
  * Cast email_addr to text
  */
 PG_FUNCTION_INFO_V1(email_addr_cast_to_text);
+
 Datum
-email_addr_cast_to_text(PG_FUNCTION_ARGS)
-{
+email_addr_cast_to_text(PG_FUNCTION_ARGS) {
     const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     if (email == NULL)
@@ -713,7 +701,7 @@ email_addr_cast_to_text(PG_FUNCTION_ARGS)
     /* Allocate and initialize result */
     text *result = palloc(VARHDRSZ + total_len);
     SET_VARSIZE(result, VARHDRSZ + total_len);
-    
+
     /* Build the string */
     char *dest = VARDATA(result);
     memcpy(dest, get_local_part(email), email->local_len);
@@ -727,20 +715,20 @@ email_addr_cast_to_text(PG_FUNCTION_ARGS)
  * Cast text to email_addr
  */
 PG_FUNCTION_INFO_V1(text_cast_to_email_addr);
+
 Datum
-text_cast_to_email_addr(PG_FUNCTION_ARGS)
-{
+text_cast_to_email_addr(PG_FUNCTION_ARGS) {
     const text *txt = PG_GETARG_TEXT_PP(0);
-    
+
     if (txt == NULL)
         PG_RETURN_NULL();
 
     /* Convert text to cstring and call the input function */
     char *str = text_to_cstring(txt);
     const Datum result = DirectFunctionCall1(email_addr_in, CStringGetDatum(str));
-    
+
     pfree(str);
-    
+
     PG_RETURN_DATUM(result);
 }
 
@@ -748,9 +736,9 @@ text_cast_to_email_addr(PG_FUNCTION_ARGS)
  * Cast email_addr to varchar
  */
 PG_FUNCTION_INFO_V1(email_addr_cast_to_varchar);
+
 Datum
-email_addr_cast_to_varchar(PG_FUNCTION_ARGS)
-{
+email_addr_cast_to_varchar(PG_FUNCTION_ARGS) {
     /* Just use the text cast - varchar is identical internally */
     return email_addr_cast_to_text(fcinfo);
 }
@@ -759,9 +747,9 @@ email_addr_cast_to_varchar(PG_FUNCTION_ARGS)
  * Cast varchar to email_addr
  */
 PG_FUNCTION_INFO_V1(varchar_cast_to_email_addr);
+
 Datum
-varchar_cast_to_email_addr(PG_FUNCTION_ARGS)
-{
+varchar_cast_to_email_addr(PG_FUNCTION_ARGS) {
     /* Just use the text cast - varchar is identical internally */
     return text_cast_to_email_addr(fcinfo);
 }
@@ -770,9 +758,9 @@ varchar_cast_to_email_addr(PG_FUNCTION_ARGS)
  * Cast email_addr to name
  */
 PG_FUNCTION_INFO_V1(email_addr_cast_to_name);
+
 Datum
-email_addr_cast_to_name(PG_FUNCTION_ARGS)
-{
+email_addr_cast_to_name(PG_FUNCTION_ARGS) {
     const EMAIL_ADDR *email = PG_GETARG_EMAIL_ADDR_PP(0);
 
     if (email == NULL)
@@ -781,15 +769,15 @@ email_addr_cast_to_name(PG_FUNCTION_ARGS)
     /* Get as text first */
     text *txt = DatumGetTextPP(DirectFunctionCall1(email_addr_cast_to_text,
         PG_GETARG_DATUM(0)));
-    
+
     /* Check length */
     int total_len = VARSIZE_ANY_EXHDR(txt);
     if (total_len >= NAMEDATALEN)
         ereport(ERROR,
-                (errcode(ERRCODE_STRING_DATA_RIGHT_TRUNCATION),
-                 errmsg("email address too long for type name"),
-                 errdetail("Email addresses cast to name type must be less than %d bytes.",
-                          NAMEDATALEN)));
+            (errcode(ERRCODE_STRING_DATA_RIGHT_TRUNCATION),
+                errmsg("email address too long for type name"),
+                errdetail("Email addresses cast to name type must be less than %d bytes.",
+                    NAMEDATALEN)));
 
     /* Convert to name */
     Name result = palloc(NAMEDATALEN);
@@ -797,7 +785,7 @@ email_addr_cast_to_name(PG_FUNCTION_ARGS)
     NameStr(*result)[total_len] = '\0';
 
     pfree(txt);
-    
+
     PG_RETURN_NAME(result);
 }
 
@@ -805,9 +793,9 @@ email_addr_cast_to_name(PG_FUNCTION_ARGS)
  * Cast name to email_addr
  */
 PG_FUNCTION_INFO_V1(name_cast_to_email_addr);
+
 Datum
-name_cast_to_email_addr(PG_FUNCTION_ARGS)
-{
+name_cast_to_email_addr(PG_FUNCTION_ARGS) {
     const Name name = PG_GETARG_NAME(0);
 
     if (name == NULL)
@@ -815,13 +803,13 @@ name_cast_to_email_addr(PG_FUNCTION_ARGS)
 
     /* Convert name to text */
     text *txt = cstring_to_text(NameStr(*name));
-    
+
     /* Use text cast */
     const Datum result = DirectFunctionCall1(text_cast_to_email_addr,
-                                       PointerGetDatum(txt));
-    
+                                             PointerGetDatum(txt));
+
     pfree(txt);
-    
+
     PG_RETURN_DATUM(result);
 }
 
@@ -829,22 +817,21 @@ name_cast_to_email_addr(PG_FUNCTION_ARGS)
  * Compare email address by domain
  */
 PG_FUNCTION_INFO_V1(email_addr_domain_cmp);
+
 Datum
-email_addr_domain_cmp(PG_FUNCTION_ARGS)
-{
+email_addr_domain_cmp(PG_FUNCTION_ARGS) {
     const EMAIL_ADDR *addr1 = PG_GETARG_EMAIL_ADDR_PP(0);
     const EMAIL_ADDR *addr2 = PG_GETARG_EMAIL_ADDR_PP(1);
     int cmp;
 
     /* Handle NULLs */
-    if (addr1 == NULL)
-    {
+    if (addr1 == NULL) {
         if (addr2 == NULL)
-            PG_RETURN_INT32(0);    /* NULL == NULL */
-        PG_RETURN_INT32(-1);       /* NULL < non-NULL */
+            PG_RETURN_INT32(0); /* NULL == NULL */
+        PG_RETURN_INT32(-1); /* NULL < non-NULL */
     }
     if (addr2 == NULL)
-        PG_RETURN_INT32(1);        /* non-NULL > NULL */
+        PG_RETURN_INT32(1); /* non-NULL > NULL */
 
     /* Get normalized (lowercase) domains */
     text *domain1 = DatumGetTextPP(DirectFunctionCall1(email_addr_normalized_domain,
@@ -857,10 +844,9 @@ email_addr_domain_cmp(PG_FUNCTION_ARGS)
         cmp = -1;
     else if (VARSIZE_ANY_EXHDR(domain1) > VARSIZE_ANY_EXHDR(domain2))
         cmp = 1;
-    else
-    {
+    else {
         cmp = memcmp(VARDATA_ANY(domain1), VARDATA_ANY(domain2),
-                    VARSIZE_ANY_EXHDR(domain1));
+                     VARSIZE_ANY_EXHDR(domain1));
     }
 
     pfree(domain1);
@@ -873,12 +859,12 @@ email_addr_domain_cmp(PG_FUNCTION_ARGS)
  * Domain equality operator
  */
 PG_FUNCTION_INFO_V1(email_addr_domain_eq);
+
 Datum
-email_addr_domain_eq(PG_FUNCTION_ARGS)
-{
+email_addr_domain_eq(PG_FUNCTION_ARGS) {
     const int32 cmp = DatumGetInt32(DirectFunctionCall2(email_addr_domain_cmp,
-                                                 PG_GETARG_DATUM(0),
-                                                 PG_GETARG_DATUM(1)));
+                                                        PG_GETARG_DATUM(0),
+                                                        PG_GETARG_DATUM(1)));
     PG_RETURN_BOOL(cmp == 0);
 }
 
@@ -886,12 +872,12 @@ email_addr_domain_eq(PG_FUNCTION_ARGS)
  * Domain not equal operator
  */
 PG_FUNCTION_INFO_V1(email_addr_domain_ne);
+
 Datum
-email_addr_domain_ne(PG_FUNCTION_ARGS)
-{
+email_addr_domain_ne(PG_FUNCTION_ARGS) {
     const int32 cmp = DatumGetInt32(DirectFunctionCall2(email_addr_domain_cmp,
-                                                 PG_GETARG_DATUM(0),
-                                                 PG_GETARG_DATUM(1)));
+                                                        PG_GETARG_DATUM(0),
+                                                        PG_GETARG_DATUM(1)));
     PG_RETURN_BOOL(cmp != 0);
 }
 
@@ -899,12 +885,12 @@ email_addr_domain_ne(PG_FUNCTION_ARGS)
  * Domain less than operator
  */
 PG_FUNCTION_INFO_V1(email_addr_domain_lt);
+
 Datum
-email_addr_domain_lt(PG_FUNCTION_ARGS)
-{
+email_addr_domain_lt(PG_FUNCTION_ARGS) {
     const int32 cmp = DatumGetInt32(DirectFunctionCall2(email_addr_domain_cmp,
-                                                 PG_GETARG_DATUM(0),
-                                                 PG_GETARG_DATUM(1)));
+                                                        PG_GETARG_DATUM(0),
+                                                        PG_GETARG_DATUM(1)));
     PG_RETURN_BOOL(cmp < 0);
 }
 
@@ -912,12 +898,12 @@ email_addr_domain_lt(PG_FUNCTION_ARGS)
  * Domain less than or equal operator
  */
 PG_FUNCTION_INFO_V1(email_addr_domain_le);
+
 Datum
-email_addr_domain_le(PG_FUNCTION_ARGS)
-{
+email_addr_domain_le(PG_FUNCTION_ARGS) {
     const int32 cmp = DatumGetInt32(DirectFunctionCall2(email_addr_domain_cmp,
-                                                 PG_GETARG_DATUM(0),
-                                                 PG_GETARG_DATUM(1)));
+                                                        PG_GETARG_DATUM(0),
+                                                        PG_GETARG_DATUM(1)));
     PG_RETURN_BOOL(cmp <= 0);
 }
 
@@ -925,12 +911,12 @@ email_addr_domain_le(PG_FUNCTION_ARGS)
  * Domain greater than operator
  */
 PG_FUNCTION_INFO_V1(email_addr_domain_gt);
+
 Datum
-email_addr_domain_gt(PG_FUNCTION_ARGS)
-{
+email_addr_domain_gt(PG_FUNCTION_ARGS) {
     const int32 cmp = DatumGetInt32(DirectFunctionCall2(email_addr_domain_cmp,
-                                                 PG_GETARG_DATUM(0),
-                                                 PG_GETARG_DATUM(1)));
+                                                        PG_GETARG_DATUM(0),
+                                                        PG_GETARG_DATUM(1)));
     PG_RETURN_BOOL(cmp > 0);
 }
 
@@ -938,11 +924,11 @@ email_addr_domain_gt(PG_FUNCTION_ARGS)
  * Domain greater than or equal operator
  */
 PG_FUNCTION_INFO_V1(email_addr_domain_ge);
+
 Datum
-email_addr_domain_ge(PG_FUNCTION_ARGS)
-{
+email_addr_domain_ge(PG_FUNCTION_ARGS) {
     const int32 cmp = DatumGetInt32(DirectFunctionCall2(email_addr_domain_cmp,
-                                                 PG_GETARG_DATUM(0),
-                                                 PG_GETARG_DATUM(1)));
+                                                        PG_GETARG_DATUM(0),
+                                                        PG_GETARG_DATUM(1)));
     PG_RETURN_BOOL(cmp >= 0);
 }

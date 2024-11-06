@@ -10,12 +10,10 @@
  */
 int
 bounded_strcasecmp(const char *s1, const size_t len1,
-                  const char *s2, const size_t len2)
-{
+                   const char *s2, const size_t len2) {
     const size_t min_len = Min(len1, len2);
     const int cmp = pg_strncasecmp(s1, s2, min_len);
-    if (cmp == 0)
-    {
+    if (cmp == 0) {
         /* If common prefix matches, longer string is greater */
         if (len1 < len2)
             return -1;

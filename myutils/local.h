@@ -38,6 +38,6 @@ uint32 hash_local_part(const char *local, size_t len);
  * Returns -1 if local1 < local2, 0 if equal, 1 if local1 > local2
  */
 int compare_local_parts(const char *local1, size_t len1,
-                             const char *local2, size_t len2);
+                        const char *local2, size_t len2);
 
 #endif //LOCAL_H

@@ -13,6 +13,6 @@
  * with length limits for each string
  */
 int bounded_strcasecmp(const char *s1, const size_t len1,
-                      const char *s2, const size_t len2);
+                       const char *s2, const size_t len2);
 
 #endif //COMMON_H
