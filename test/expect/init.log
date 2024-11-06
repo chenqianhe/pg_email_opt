@@ -1,0 +1,2 @@
+psql:sql/init.sql:1: NOTICE:  extension "pg_email_opt" does not exist, skipping
+psql:sql/init.sql:4: NOTICE:  table "email_test" does not exist, skipping

@@ -1,0 +1,334 @@
+psql:sql/test003-index.sql:6: NOTICE:  index "idx_email_btree" does not exist, skipping
+psql:sql/test003-index.sql:7: NOTICE:  index "idx_email_hash" does not exist, skipping
+psql:sql/test003-index.sql:8: NOTICE:  index "idx_email_domain_btree" does not exist, skipping
+psql:sql/test003-index.sql:9: NOTICE:  index "idx_email_local_btree" does not exist, skipping
+psql:sql/test003-index.sql:38: NOTICE:  Structure details:
+psql:sql/test003-index.sql:38: NOTICE:    varlena size: 33
+psql:sql/test003-index.sql:38: NOTICE:    domain_offset: 7
+psql:sql/test003-index.sql:38: NOTICE:    local_len: 6
+psql:sql/test003-index.sql:38: NOTICE:    domain_len: 11
+psql:sql/test003-index.sql:38: NOTICE:  Raw data (hex):
+psql:sql/test003-index.sql:38: NOTICE:    byte[0]: 84
+psql:sql/test003-index.sql:38: NOTICE:    byte[1]: 00
+psql:sql/test003-index.sql:38: NOTICE:    byte[2]: 00
+psql:sql/test003-index.sql:38: NOTICE:    byte[3]: 00
+psql:sql/test003-index.sql:38: NOTICE:    byte[4]: 07
+psql:sql/test003-index.sql:38: NOTICE:    byte[5]: 00
+psql:sql/test003-index.sql:38: NOTICE:    byte[6]: 06
+psql:sql/test003-index.sql:38: NOTICE:    byte[7]: 00
+psql:sql/test003-index.sql:38: NOTICE:    byte[8]: 0b
+psql:sql/test003-index.sql:38: NOTICE:    byte[9]: 00
+psql:sql/test003-index.sql:38: NOTICE:    byte[10]: 73
+psql:sql/test003-index.sql:38: NOTICE:    byte[11]: 69
+psql:sql/test003-index.sql:38: NOTICE:    byte[12]: 6d
+psql:sql/test003-index.sql:38: NOTICE:    byte[13]: 70
+psql:sql/test003-index.sql:38: NOTICE:    byte[14]: 6c
+psql:sql/test003-index.sql:38: NOTICE:    byte[15]: 65
+psql:sql/test003-index.sql:38: NOTICE:    byte[16]: 00
+psql:sql/test003-index.sql:38: NOTICE:    byte[17]: 65
+psql:sql/test003-index.sql:38: NOTICE:    byte[18]: 78
+psql:sql/test003-index.sql:38: NOTICE:    byte[19]: 61
+psql:sql/test003-index.sql:38: NOTICE:    byte[20]: 6d
+psql:sql/test003-index.sql:38: NOTICE:    byte[21]: 70
+psql:sql/test003-index.sql:38: NOTICE:    byte[22]: 6c
+psql:sql/test003-index.sql:38: NOTICE:    byte[23]: 65
+psql:sql/test003-index.sql:38: NOTICE:    byte[24]: 2e
+psql:sql/test003-index.sql:38: NOTICE:    byte[25]: 63
+psql:sql/test003-index.sql:38: NOTICE:    byte[26]: 6f
+psql:sql/test003-index.sql:38: NOTICE:    byte[27]: 6d
+psql:sql/test003-index.sql:38: NOTICE:    byte[28]: 00
+psql:sql/test003-index.sql:38: NOTICE:    byte[29]: 00
+psql:sql/test003-index.sql:38: NOTICE:    byte[30]: 00
+psql:sql/test003-index.sql:38: NOTICE:    byte[31]: 00
+psql:sql/test003-index.sql:38: NOTICE:    byte[32]: 00
+psql:sql/test003-index.sql:38: NOTICE:  Local part pointer: 0xaaaae5f1fcaa
+psql:sql/test003-index.sql:38: NOTICE:  Local part content: 'simple'
+psql:sql/test003-index.sql:38: NOTICE:  Domain pointer: 0xaaaae5f1fcb1
+psql:sql/test003-index.sql:38: NOTICE:  Domain content: 'example.com'
+psql:sql/test003-index.sql:38: NOTICE:  Final result: 'simple@example.com'
+psql:sql/test003-index.sql:45: NOTICE:  Structure details:
+psql:sql/test003-index.sql:45: NOTICE:    varlena size: 33
+psql:sql/test003-index.sql:45: NOTICE:    domain_offset: 7
+psql:sql/test003-index.sql:45: NOTICE:    local_len: 6
+psql:sql/test003-index.sql:45: NOTICE:    domain_len: 11
+psql:sql/test003-index.sql:45: NOTICE:  Raw data (hex):
+psql:sql/test003-index.sql:45: NOTICE:    byte[0]: 84
+psql:sql/test003-index.sql:45: NOTICE:    byte[1]: 00
+psql:sql/test003-index.sql:45: NOTICE:    byte[2]: 00
+psql:sql/test003-index.sql:45: NOTICE:    byte[3]: 00
+psql:sql/test003-index.sql:45: NOTICE:    byte[4]: 07
+psql:sql/test003-index.sql:45: NOTICE:    byte[5]: 00
+psql:sql/test003-index.sql:45: NOTICE:    byte[6]: 06
+psql:sql/test003-index.sql:45: NOTICE:    byte[7]: 00
+psql:sql/test003-index.sql:45: NOTICE:    byte[8]: 0b
+psql:sql/test003-index.sql:45: NOTICE:    byte[9]: 00
+psql:sql/test003-index.sql:45: NOTICE:    byte[10]: 73
+psql:sql/test003-index.sql:45: NOTICE:    byte[11]: 69
+psql:sql/test003-index.sql:45: NOTICE:    byte[12]: 6d
+psql:sql/test003-index.sql:45: NOTICE:    byte[13]: 70
+psql:sql/test003-index.sql:45: NOTICE:    byte[14]: 6c
+psql:sql/test003-index.sql:45: NOTICE:    byte[15]: 65
+psql:sql/test003-index.sql:45: NOTICE:    byte[16]: 00
+psql:sql/test003-index.sql:45: NOTICE:    byte[17]: 65
+psql:sql/test003-index.sql:45: NOTICE:    byte[18]: 78
+psql:sql/test003-index.sql:45: NOTICE:    byte[19]: 61
+psql:sql/test003-index.sql:45: NOTICE:    byte[20]: 6d
+psql:sql/test003-index.sql:45: NOTICE:    byte[21]: 70
+psql:sql/test003-index.sql:45: NOTICE:    byte[22]: 6c
+psql:sql/test003-index.sql:45: NOTICE:    byte[23]: 65
+psql:sql/test003-index.sql:45: NOTICE:    byte[24]: 2e
+psql:sql/test003-index.sql:45: NOTICE:    byte[25]: 63
+psql:sql/test003-index.sql:45: NOTICE:    byte[26]: 6f
+psql:sql/test003-index.sql:45: NOTICE:    byte[27]: 6d
+psql:sql/test003-index.sql:45: NOTICE:    byte[28]: 00
+psql:sql/test003-index.sql:45: NOTICE:    byte[29]: 00
+psql:sql/test003-index.sql:45: NOTICE:    byte[30]: 00
+psql:sql/test003-index.sql:45: NOTICE:    byte[31]: 00
+psql:sql/test003-index.sql:45: NOTICE:    byte[32]: 00
+psql:sql/test003-index.sql:45: NOTICE:  Local part pointer: 0xaaaae5e16bca
+psql:sql/test003-index.sql:45: NOTICE:  Local part content: 'simple'
+psql:sql/test003-index.sql:45: NOTICE:  Domain pointer: 0xaaaae5e16bd1
+psql:sql/test003-index.sql:45: NOTICE:  Domain content: 'example.com'
+psql:sql/test003-index.sql:45: NOTICE:  Final result: 'simple@example.com'
+psql:sql/test003-index.sql:56: NOTICE:  Structure details:
+psql:sql/test003-index.sql:56: NOTICE:    varlena size: 28
+psql:sql/test003-index.sql:56: NOTICE:    domain_offset: 2
+psql:sql/test003-index.sql:56: NOTICE:    local_len: 1
+psql:sql/test003-index.sql:56: NOTICE:    domain_len: 11
+psql:sql/test003-index.sql:56: NOTICE:  Raw data (hex):
+psql:sql/test003-index.sql:56: NOTICE:    byte[0]: 70
+psql:sql/test003-index.sql:56: NOTICE:    byte[1]: 00
+psql:sql/test003-index.sql:56: NOTICE:    byte[2]: 00
+psql:sql/test003-index.sql:56: NOTICE:    byte[3]: 00
+psql:sql/test003-index.sql:56: NOTICE:    byte[4]: 02
+psql:sql/test003-index.sql:56: NOTICE:    byte[5]: 00
+psql:sql/test003-index.sql:56: NOTICE:    byte[6]: 01
+psql:sql/test003-index.sql:56: NOTICE:    byte[7]: 00
+psql:sql/test003-index.sql:56: NOTICE:    byte[8]: 0b
+psql:sql/test003-index.sql:56: NOTICE:    byte[9]: 00
+psql:sql/test003-index.sql:56: NOTICE:    byte[10]: 6e
+psql:sql/test003-index.sql:56: NOTICE:    byte[11]: 00
+psql:sql/test003-index.sql:56: NOTICE:    byte[12]: 65
+psql:sql/test003-index.sql:56: NOTICE:    byte[13]: 78
+psql:sql/test003-index.sql:56: NOTICE:    byte[14]: 61
+psql:sql/test003-index.sql:56: NOTICE:    byte[15]: 6d
+psql:sql/test003-index.sql:56: NOTICE:    byte[16]: 70
+psql:sql/test003-index.sql:56: NOTICE:    byte[17]: 6c
+psql:sql/test003-index.sql:56: NOTICE:    byte[18]: 65
+psql:sql/test003-index.sql:56: NOTICE:    byte[19]: 2e
+psql:sql/test003-index.sql:56: NOTICE:    byte[20]: 63
+psql:sql/test003-index.sql:56: NOTICE:    byte[21]: 6f
+psql:sql/test003-index.sql:56: NOTICE:    byte[22]: 6d
+psql:sql/test003-index.sql:56: NOTICE:    byte[23]: 00
+psql:sql/test003-index.sql:56: NOTICE:    byte[24]: 00
+psql:sql/test003-index.sql:56: NOTICE:    byte[25]: 00
+psql:sql/test003-index.sql:56: NOTICE:    byte[26]: 00
+psql:sql/test003-index.sql:56: NOTICE:    byte[27]: 00
+psql:sql/test003-index.sql:56: NOTICE:  Local part pointer: 0xaaaae5f1feb2
+psql:sql/test003-index.sql:56: NOTICE:  Local part content: 'n'
+psql:sql/test003-index.sql:56: NOTICE:  Domain pointer: 0xaaaae5f1feb4
+psql:sql/test003-index.sql:56: NOTICE:  Domain content: 'example.com'
+psql:sql/test003-index.sql:56: NOTICE:  Final result: 'n@example.com'
+psql:sql/test003-index.sql:63: NOTICE:  Structure details:
+psql:sql/test003-index.sql:63: NOTICE:    varlena size: 28
+psql:sql/test003-index.sql:63: NOTICE:    domain_offset: 2
+psql:sql/test003-index.sql:63: NOTICE:    local_len: 1
+psql:sql/test003-index.sql:63: NOTICE:    domain_len: 11
+psql:sql/test003-index.sql:63: NOTICE:  Raw data (hex):
+psql:sql/test003-index.sql:63: NOTICE:    byte[0]: 70
+psql:sql/test003-index.sql:63: NOTICE:    byte[1]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[2]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[3]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[4]: 02
+psql:sql/test003-index.sql:63: NOTICE:    byte[5]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[6]: 01
+psql:sql/test003-index.sql:63: NOTICE:    byte[7]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[8]: 0b
+psql:sql/test003-index.sql:63: NOTICE:    byte[9]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[10]: 61
+psql:sql/test003-index.sql:63: NOTICE:    byte[11]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[12]: 65
+psql:sql/test003-index.sql:63: NOTICE:    byte[13]: 78
+psql:sql/test003-index.sql:63: NOTICE:    byte[14]: 61
+psql:sql/test003-index.sql:63: NOTICE:    byte[15]: 6d
+psql:sql/test003-index.sql:63: NOTICE:    byte[16]: 70
+psql:sql/test003-index.sql:63: NOTICE:    byte[17]: 6c
+psql:sql/test003-index.sql:63: NOTICE:    byte[18]: 65
+psql:sql/test003-index.sql:63: NOTICE:    byte[19]: 2e
+psql:sql/test003-index.sql:63: NOTICE:    byte[20]: 63
+psql:sql/test003-index.sql:63: NOTICE:    byte[21]: 6f
+psql:sql/test003-index.sql:63: NOTICE:    byte[22]: 6d
+psql:sql/test003-index.sql:63: NOTICE:    byte[23]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[24]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[25]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[26]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[27]: 00
+psql:sql/test003-index.sql:63: NOTICE:  Local part pointer: 0xaaaae5f20212
+psql:sql/test003-index.sql:63: NOTICE:  Local part content: 'a'
+psql:sql/test003-index.sql:63: NOTICE:  Domain pointer: 0xaaaae5f20214
+psql:sql/test003-index.sql:63: NOTICE:  Domain content: 'example.com'
+psql:sql/test003-index.sql:63: NOTICE:  Final result: 'a@example.com'
+psql:sql/test003-index.sql:63: NOTICE:  Structure details:
+psql:sql/test003-index.sql:63: NOTICE:    varlena size: 28
+psql:sql/test003-index.sql:63: NOTICE:    domain_offset: 2
+psql:sql/test003-index.sql:63: NOTICE:    local_len: 1
+psql:sql/test003-index.sql:63: NOTICE:    domain_len: 11
+psql:sql/test003-index.sql:63: NOTICE:  Raw data (hex):
+psql:sql/test003-index.sql:63: NOTICE:    byte[0]: 70
+psql:sql/test003-index.sql:63: NOTICE:    byte[1]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[2]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[3]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[4]: 02
+psql:sql/test003-index.sql:63: NOTICE:    byte[5]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[6]: 01
+psql:sql/test003-index.sql:63: NOTICE:    byte[7]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[8]: 0b
+psql:sql/test003-index.sql:63: NOTICE:    byte[9]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[10]: 6e
+psql:sql/test003-index.sql:63: NOTICE:    byte[11]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[12]: 65
+psql:sql/test003-index.sql:63: NOTICE:    byte[13]: 78
+psql:sql/test003-index.sql:63: NOTICE:    byte[14]: 61
+psql:sql/test003-index.sql:63: NOTICE:    byte[15]: 6d
+psql:sql/test003-index.sql:63: NOTICE:    byte[16]: 70
+psql:sql/test003-index.sql:63: NOTICE:    byte[17]: 6c
+psql:sql/test003-index.sql:63: NOTICE:    byte[18]: 65
+psql:sql/test003-index.sql:63: NOTICE:    byte[19]: 2e
+psql:sql/test003-index.sql:63: NOTICE:    byte[20]: 63
+psql:sql/test003-index.sql:63: NOTICE:    byte[21]: 6f
+psql:sql/test003-index.sql:63: NOTICE:    byte[22]: 6d
+psql:sql/test003-index.sql:63: NOTICE:    byte[23]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[24]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[25]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[26]: 00
+psql:sql/test003-index.sql:63: NOTICE:    byte[27]: 00
+psql:sql/test003-index.sql:63: NOTICE:  Local part pointer: 0xaaaae5f2063a
+psql:sql/test003-index.sql:63: NOTICE:  Local part content: 'n'
+psql:sql/test003-index.sql:63: NOTICE:  Domain pointer: 0xaaaae5f2063c
+psql:sql/test003-index.sql:63: NOTICE:  Domain content: 'example.com'
+psql:sql/test003-index.sql:63: NOTICE:  Final result: 'n@example.com'
+psql:sql/test003-index.sql:74: NOTICE:  Structure details:
+psql:sql/test003-index.sql:74: NOTICE:    varlena size: 31
+psql:sql/test003-index.sql:74: NOTICE:    domain_offset: 5
+psql:sql/test003-index.sql:74: NOTICE:    local_len: 4
+psql:sql/test003-index.sql:74: NOTICE:    domain_len: 11
+psql:sql/test003-index.sql:74: NOTICE:  Raw data (hex):
+psql:sql/test003-index.sql:74: NOTICE:    byte[0]: 7c
+psql:sql/test003-index.sql:74: NOTICE:    byte[1]: 00
+psql:sql/test003-index.sql:74: NOTICE:    byte[2]: 00
+psql:sql/test003-index.sql:74: NOTICE:    byte[3]: 00
+psql:sql/test003-index.sql:74: NOTICE:    byte[4]: 05
+psql:sql/test003-index.sql:74: NOTICE:    byte[5]: 00
+psql:sql/test003-index.sql:74: NOTICE:    byte[6]: 04
+psql:sql/test003-index.sql:74: NOTICE:    byte[7]: 00
+psql:sql/test003-index.sql:74: NOTICE:    byte[8]: 0b
+psql:sql/test003-index.sql:74: NOTICE:    byte[9]: 00
+psql:sql/test003-index.sql:74: NOTICE:    byte[10]: 74
+psql:sql/test003-index.sql:74: NOTICE:    byte[11]: 65
+psql:sql/test003-index.sql:74: NOTICE:    byte[12]: 73
+psql:sql/test003-index.sql:74: NOTICE:    byte[13]: 74
+psql:sql/test003-index.sql:74: NOTICE:    byte[14]: 00
+psql:sql/test003-index.sql:74: NOTICE:    byte[15]: 65
+psql:sql/test003-index.sql:74: NOTICE:    byte[16]: 78
+psql:sql/test003-index.sql:74: NOTICE:    byte[17]: 61
+psql:sql/test003-index.sql:74: NOTICE:    byte[18]: 6d
+psql:sql/test003-index.sql:74: NOTICE:    byte[19]: 70
+psql:sql/test003-index.sql:74: NOTICE:    byte[20]: 6c
+psql:sql/test003-index.sql:74: NOTICE:    byte[21]: 65
+psql:sql/test003-index.sql:74: NOTICE:    byte[22]: 2e
+psql:sql/test003-index.sql:74: NOTICE:    byte[23]: 63
+psql:sql/test003-index.sql:74: NOTICE:    byte[24]: 6f
+psql:sql/test003-index.sql:74: NOTICE:    byte[25]: 6d
+psql:sql/test003-index.sql:74: NOTICE:    byte[26]: 00
+psql:sql/test003-index.sql:74: NOTICE:    byte[27]: 00
+psql:sql/test003-index.sql:74: NOTICE:    byte[28]: 00
+psql:sql/test003-index.sql:74: NOTICE:    byte[29]: 00
+psql:sql/test003-index.sql:74: NOTICE:    byte[30]: 00
+psql:sql/test003-index.sql:74: NOTICE:  Local part pointer: 0xaaaae5e16f0a
+psql:sql/test003-index.sql:74: NOTICE:  Local part content: 'test'
+psql:sql/test003-index.sql:74: NOTICE:  Domain pointer: 0xaaaae5e16f0f
+psql:sql/test003-index.sql:74: NOTICE:  Domain content: 'example.com'
+psql:sql/test003-index.sql:74: NOTICE:  Final result: 'test@example.com'
+psql:sql/test003-index.sql:108: NOTICE:  Structure details:
+psql:sql/test003-index.sql:108: NOTICE:    varlena size: 28
+psql:sql/test003-index.sql:108: NOTICE:    domain_offset: 2
+psql:sql/test003-index.sql:108: NOTICE:    local_len: 1
+psql:sql/test003-index.sql:108: NOTICE:    domain_len: 11
+psql:sql/test003-index.sql:108: NOTICE:  Raw data (hex):
+psql:sql/test003-index.sql:108: NOTICE:    byte[0]: 70
+psql:sql/test003-index.sql:108: NOTICE:    byte[1]: 00
+psql:sql/test003-index.sql:108: NOTICE:    byte[2]: 00
+psql:sql/test003-index.sql:108: NOTICE:    byte[3]: 00
+psql:sql/test003-index.sql:108: NOTICE:    byte[4]: 02
+psql:sql/test003-index.sql:108: NOTICE:    byte[5]: 00
+psql:sql/test003-index.sql:108: NOTICE:    byte[6]: 01
+psql:sql/test003-index.sql:108: NOTICE:    byte[7]: 00
+psql:sql/test003-index.sql:108: NOTICE:    byte[8]: 0b
+psql:sql/test003-index.sql:108: NOTICE:    byte[9]: 00
+psql:sql/test003-index.sql:108: NOTICE:    byte[10]: 6e
+psql:sql/test003-index.sql:108: NOTICE:    byte[11]: 00
+psql:sql/test003-index.sql:108: NOTICE:    byte[12]: 65
+psql:sql/test003-index.sql:108: NOTICE:    byte[13]: 78
+psql:sql/test003-index.sql:108: NOTICE:    byte[14]: 61
+psql:sql/test003-index.sql:108: NOTICE:    byte[15]: 6d
+psql:sql/test003-index.sql:108: NOTICE:    byte[16]: 70
+psql:sql/test003-index.sql:108: NOTICE:    byte[17]: 6c
+psql:sql/test003-index.sql:108: NOTICE:    byte[18]: 65
+psql:sql/test003-index.sql:108: NOTICE:    byte[19]: 2e
+psql:sql/test003-index.sql:108: NOTICE:    byte[20]: 63
+psql:sql/test003-index.sql:108: NOTICE:    byte[21]: 6f
+psql:sql/test003-index.sql:108: NOTICE:    byte[22]: 6d
+psql:sql/test003-index.sql:108: NOTICE:    byte[23]: 00
+psql:sql/test003-index.sql:108: NOTICE:    byte[24]: 00
+psql:sql/test003-index.sql:108: NOTICE:    byte[25]: 00
+psql:sql/test003-index.sql:108: NOTICE:    byte[26]: 00
+psql:sql/test003-index.sql:108: NOTICE:    byte[27]: 00
+psql:sql/test003-index.sql:108: NOTICE:  Local part pointer: 0xaaaae5e16a42
+psql:sql/test003-index.sql:108: NOTICE:  Local part content: 'n'
+psql:sql/test003-index.sql:108: NOTICE:  Domain pointer: 0xaaaae5e16a44
+psql:sql/test003-index.sql:108: NOTICE:  Domain content: 'example.com'
+psql:sql/test003-index.sql:108: NOTICE:  Final result: 'n@example.com'
+psql:sql/test003-index.sql:123: NOTICE:  Structure details:
+psql:sql/test003-index.sql:123: NOTICE:    varlena size: 33
+psql:sql/test003-index.sql:123: NOTICE:    domain_offset: 7
+psql:sql/test003-index.sql:123: NOTICE:    local_len: 6
+psql:sql/test003-index.sql:123: NOTICE:    domain_len: 11
+psql:sql/test003-index.sql:123: NOTICE:  Raw data (hex):
+psql:sql/test003-index.sql:123: NOTICE:    byte[0]: 84
+psql:sql/test003-index.sql:123: NOTICE:    byte[1]: 00
+psql:sql/test003-index.sql:123: NOTICE:    byte[2]: 00
+psql:sql/test003-index.sql:123: NOTICE:    byte[3]: 00
+psql:sql/test003-index.sql:123: NOTICE:    byte[4]: 07
+psql:sql/test003-index.sql:123: NOTICE:    byte[5]: 00
+psql:sql/test003-index.sql:123: NOTICE:    byte[6]: 06
+psql:sql/test003-index.sql:123: NOTICE:    byte[7]: 00
+psql:sql/test003-index.sql:123: NOTICE:    byte[8]: 0b
+psql:sql/test003-index.sql:123: NOTICE:    byte[9]: 00
+psql:sql/test003-index.sql:123: NOTICE:    byte[10]: 73
+psql:sql/test003-index.sql:123: NOTICE:    byte[11]: 69
+psql:sql/test003-index.sql:123: NOTICE:    byte[12]: 6d
+psql:sql/test003-index.sql:123: NOTICE:    byte[13]: 70
+psql:sql/test003-index.sql:123: NOTICE:    byte[14]: 6c
+psql:sql/test003-index.sql:123: NOTICE:    byte[15]: 65
+psql:sql/test003-index.sql:123: NOTICE:    byte[16]: 00
+psql:sql/test003-index.sql:123: NOTICE:    byte[17]: 65
+psql:sql/test003-index.sql:123: NOTICE:    byte[18]: 78
+psql:sql/test003-index.sql:123: NOTICE:    byte[19]: 61
+psql:sql/test003-index.sql:123: NOTICE:    byte[20]: 6d
+psql:sql/test003-index.sql:123: NOTICE:    byte[21]: 70
+psql:sql/test003-index.sql:123: NOTICE:    byte[22]: 6c
+psql:sql/test003-index.sql:123: NOTICE:    byte[23]: 65
+psql:sql/test003-index.sql:123: NOTICE:    byte[24]: 2e
+psql:sql/test003-index.sql:123: NOTICE:    byte[25]: 63
+psql:sql/test003-index.sql:123: NOTICE:    byte[26]: 6f
+psql:sql/test003-index.sql:123: NOTICE:    byte[27]: 6d
+psql:sql/test003-index.sql:123: NOTICE:    byte[28]: 00
+psql:sql/test003-index.sql:123: NOTICE:    byte[29]: 00
+psql:sql/test003-index.sql:123: NOTICE:    byte[30]: 00
+psql:sql/test003-index.sql:123: NOTICE:    byte[31]: 00
+psql:sql/test003-index.sql:123: NOTICE:    byte[32]: 00
+psql:sql/test003-index.sql:123: NOTICE:  Local part pointer: 0xaaaae5f20492
+psql:sql/test003-index.sql:123: NOTICE:  Local part content: 'simple'
+psql:sql/test003-index.sql:123: NOTICE:  Domain pointer: 0xaaaae5f20499
+psql:sql/test003-index.sql:123: NOTICE:  Domain content: 'example.com'
+psql:sql/test003-index.sql:123: NOTICE:  Final result: 'simple@example.com'

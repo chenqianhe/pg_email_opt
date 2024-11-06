@@ -1,0 +1,135 @@
+psql:sql/test001-insert-wrong.sql:4: ERROR:  invalid input syntax for type emailaddr: "abc.example.com"
+LINE 2: VALUES ('abc.example.com', 'Missing @ character');
+                ^
+psql:sql/test001-insert-wrong.sql:8: ERROR:  invalid local-part of email address: invalid character in unquoted local part
+LINE 2: VALUES ('a@b@c@example.com', 'Multiple @ characters');
+                ^
+DETAIL:  Local-part was: "a@b@c"
+HINT:  The local-part of an email address must follow RFC 5321/5322 rules
+psql:sql/test001-insert-wrong.sql:12: ERROR:  invalid local-part of email address: unquoted local part cannot begin or end with a dot
+LINE 2: VALUES ('.test@example.com', 'Leading dot in local part');
+                ^
+DETAIL:  Local-part was: ".test"
+HINT:  The local-part of an email address must follow RFC 5321/5322 rules
+psql:sql/test001-insert-wrong.sql:16: ERROR:  invalid local-part of email address: unquoted local part cannot begin or end with a dot
+LINE 2: VALUES ('test.@example.com', 'Trailing dot in local part');
+                ^
+DETAIL:  Local-part was: "test."
+HINT:  The local-part of an email address must follow RFC 5321/5322 rules
+psql:sql/test001-insert-wrong.sql:20: ERROR:  invalid local-part of email address: unquoted local part cannot contain consecutive dots
+LINE 2: VALUES ('te..st@example.com', 'Consecutive dots in local par...
+                ^
+DETAIL:  Local-part was: "te..st"
+HINT:  The local-part of an email address must follow RFC 5321/5322 rules
+psql:sql/test001-insert-wrong.sql:24: ERROR:  invalid local-part of email address: invalid character in unquoted local part
+LINE 2: VALUES ('test space@example.com', 'Unquoted space in local p...
+                ^
+DETAIL:  Local-part was: "test space"
+HINT:  The local-part of an email address must follow RFC 5321/5322 rules
+psql:sql/test001-insert-wrong.sql:29: ERROR:  invalid local-part of email address: invalid character in unquoted local part
+LINE 2: VALUES ('just"not"right@example.com', 'Unescaped quotes');
+                ^
+DETAIL:  Local-part was: "just"not"right"
+HINT:  The local-part of an email address must follow RFC 5321/5322 rules
+psql:sql/test001-insert-wrong.sql:33: ERROR:  unterminated quotes in email address: "this is"not\allowed@example.com"
+LINE 2: VALUES ('this is"not\allowed@example.com', 'Space and quote ...
+                ^
+psql:sql/test001-insert-wrong.sql:37: ERROR:  invalid local-part of email address: invalid character in unquoted local part
+LINE 2: VALUES ('this\ still\"not\\allowed@example.com', 'Invalid es...
+                ^
+DETAIL:  Local-part was: "this\ still\"not\\allowed"
+HINT:  The local-part of an email address must follow RFC 5321/5322 rules
+psql:sql/test001-insert-wrong.sql:43: ERROR:  invalid local-part of email address: local part exceeds maximum length of 64 characters
+LINE 2: VALUES ('123456789012345678901234567890123456789012345678901...
+                ^
+DETAIL:  Local-part was: "1234567890123456789012345678901234567890123456789012345678901234+x"
+HINT:  The local-part of an email address must follow RFC 5321/5322 rules
+psql:sql/test001-insert-wrong.sql:47: ERROR:  invalid domain part of email address: domain name exceeds maximum length
+DETAIL:  Domain was: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.com"
+HINT:  Domain must follow DNS naming rules or be a valid IP address literal
+psql:sql/test001-insert-wrong.sql:52: ERROR:  invalid domain part of email address: empty label in domain name
+LINE 2: VALUES ('test@example..com', 'Consecutive dots in domain');
+                ^
+DETAIL:  Domain was: "example..com"
+HINT:  Domain must follow DNS naming rules or be a valid IP address literal
+psql:sql/test001-insert-wrong.sql:56: ERROR:  invalid domain part of email address: domain label cannot start or end with hyphen
+LINE 2: VALUES ('test@-example.com', 'Leading hyphen in domain label...
+                ^
+DETAIL:  Domain was: "-example.com"
+HINT:  Domain must follow DNS naming rules or be a valid IP address literal
+psql:sql/test001-insert-wrong.sql:60: ERROR:  invalid domain part of email address: domain label cannot start or end with hyphen
+LINE 2: VALUES ('test@example-.com', 'Trailing hyphen in domain labe...
+                ^
+DETAIL:  Domain was: "example-.com"
+HINT:  Domain must follow DNS naming rules or be a valid IP address literal
+psql:sql/test001-insert-wrong.sql:64: ERROR:  invalid domain part of email address: empty label in domain name
+LINE 2: VALUES ('test@.example.com', 'Leading dot in domain');
+                ^
+DETAIL:  Domain was: ".example.com"
+HINT:  Domain must follow DNS naming rules or be a valid IP address literal
+psql:sql/test001-insert-wrong.sql:68: ERROR:  invalid domain part of email address: empty label in domain name
+LINE 2: VALUES ('test@example.com.', 'Trailing dot in domain');
+                ^
+DETAIL:  Domain was: "example.com."
+HINT:  Domain must follow DNS naming rules or be a valid IP address literal
+psql:sql/test001-insert-wrong.sql:72: ERROR:  invalid domain part of email address: invalid character in domain name
+LINE 2: VALUES ('test@exam ple.com', 'Space in domain');
+                ^
+DETAIL:  Domain was: "exam ple.com"
+HINT:  Domain must follow DNS naming rules or be a valid IP address literal
+psql:sql/test001-insert-wrong.sql:76: ERROR:  invalid domain part of email address: invalid character in domain name
+LINE 2: VALUES ('test@exa_mple.com', 'Underscore in domain');
+                ^
+DETAIL:  Domain was: "exa_mple.com"
+HINT:  Domain must follow DNS naming rules or be a valid IP address literal
+psql:sql/test001-insert-wrong.sql:81: ERROR:  invalid local-part of email address: invalid character in unquoted local part
+LINE 2: VALUES ('тест@example.com', 'Non-ASCII in local part wit...
+                ^
+DETAIL:  Local-part was: "тест"
+HINT:  The local-part of an email address must follow RFC 5321/5322 rules
+psql:sql/test001-insert-wrong.sql:85: ERROR:  invalid domain part of email address: invalid character in domain name
+LINE 2: VALUES ('test@测试.com', 'Non-ASCII in domain without IDNA...
+                ^
+DETAIL:  Domain was: "测试.com"
+HINT:  Domain must follow DNS naming rules or be a valid IP address literal
+psql:sql/test001-insert-wrong.sql:89: ERROR:  invalid domain part of email address: invalid IPv4 address
+LINE 2: VALUES ('test@[333.333.333.333]', 'Invalid IP format');
+                ^
+DETAIL:  Domain was: "[333.333.333.333]"
+HINT:  Domain must follow DNS naming rules or be a valid IP address literal
+psql:sql/test001-insert-wrong.sql:93: ERROR:  invalid domain part of email address: invalid IPv6 address
+LINE 2: VALUES ('test@[IPv6:2001:db8:85a3::8a2e:37023:7334]', 'Inval...
+                ^
+DETAIL:  Domain was: "[IPv6:2001:db8:85a3::8a2e:37023:7334]"
+HINT:  Domain must follow DNS naming rules or be a valid IP address literal
+psql:sql/test001-insert-wrong.sql:98: ERROR:  unterminated quotes in email address: ""test"test"@example.com"
+LINE 2: VALUES ('"test"test"@example.com', 'Invalid quote combinatio...
+                ^
+psql:sql/test001-insert-wrong.sql:102: ERROR:  unterminated quotes in email address: "test"@example.com"
+LINE 2: VALUES ('test"@example.com', 'Unmatched quote');
+                ^
+psql:sql/test001-insert-wrong.sql:106: ERROR:  invalid domain part of email address: domain cannot be empty
+LINE 2: VALUES ('test@', 'Missing domain part');
+                ^
+DETAIL:  Domain was: ""
+HINT:  Domain must follow DNS naming rules or be a valid IP address literal
+psql:sql/test001-insert-wrong.sql:110: ERROR:  invalid local-part of email address: local part cannot be empty
+LINE 2: VALUES ('@example.com', 'Missing local part');
+                ^
+DETAIL:  Local-part was: ""
+HINT:  The local-part of an email address must follow RFC 5321/5322 rules
+psql:sql/test001-insert-wrong.sql:115: ERROR:  invalid local-part of email address: invalid character in unquoted local part
+LINE 2: VALUES ('(comment)test@example.com', 'Leading comment not su...
+                ^
+DETAIL:  Local-part was: "(comment)test"
+HINT:  The local-part of an email address must follow RFC 5321/5322 rules
+psql:sql/test001-insert-wrong.sql:119: ERROR:  invalid local-part of email address: invalid character in unquoted local part
+LINE 2: VALUES ('test(comment)@example.com', 'Embedded comment not s...
+                ^
+DETAIL:  Local-part was: "test(comment)"
+HINT:  The local-part of an email address must follow RFC 5321/5322 rules
+psql:sql/test001-insert-wrong.sql:123: ERROR:  invalid domain part of email address: invalid character in domain name
+LINE 2: VALUES ('test@example.com(comment)', 'Trailing comment not s...
+                ^
+DETAIL:  Domain was: "example.com(comment)"
+HINT:  Domain must follow DNS naming rules or be a valid IP address literal

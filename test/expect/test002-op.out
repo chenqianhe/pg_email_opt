@@ -1,0 +1,412 @@
+-[ RECORD 1 ]-+---
+total_records | 27
+
+-[ RECORD 1 ]---------------------------------
+email       | email@[123.123.123.123]
+description | IPv4 literal address
+-[ RECORD 2 ]---------------------------------
+email       | test@a.b.c.d.example.com
+description | Multiple short subdomains
+-[ RECORD 3 ]---------------------------------
+email       | email@example-one.com
+description | Hyphen in domain
+-[ RECORD 4 ]---------------------------------
+email       | email@example.co.jp
+description | Country code second-level domain
+-[ RECORD 5 ]---------------------------------
+email       | POSTMASTER@EXAMPLE.COM
+description | Special postmaster address
+
+(0 rows)
+
+-[ RECORD 1 ]--------------------------------
+email       | simple@example.com
+description | Basic email format
+-[ RECORD 2 ]--------------------------------
+email       | very.common@example.com
+description | Common format with dot
+-[ RECORD 3 ]--------------------------------
+email       | firstname.lastname@example.com
+description | Standard name format
+-[ RECORD 4 ]--------------------------------
+email       | user.name+tag@example.com
+description | Plus tag format common in Gmail
+-[ RECORD 5 ]--------------------------------
+email       | test123@example.com
+description | Alphanumeric local part
+
+-[ RECORD 1 ]---------------------------------
+email       | email@[123.123.123.123]
+description | IPv4 literal address
+-[ RECORD 2 ]---------------------------------
+email       | test@a.b.c.d.example.com
+description | Multiple short subdomains
+-[ RECORD 3 ]---------------------------------
+email       | email@example-one.com
+description | Hyphen in domain
+-[ RECORD 4 ]---------------------------------
+email       | email@example.co.jp
+description | Country code second-level domain
+-[ RECORD 5 ]---------------------------------
+email       | !def!xyz%abc@example.com
+description | Special chars in local part
+
+-[ RECORD 1 ]---------------------------
+email       | POSTMASTER@EXAMPLE.COM
+description | Special postmaster address
+-[ RECORD 2 ]---------------------------
+email       | simple@example.com
+description | Basic email format
+-[ RECORD 3 ]---------------------------
+email       | Test.Email@Example.Com
+description | Mixed case everything
+-[ RECORD 4 ]---------------------------
+email       | test.email@example.com
+description | All lowercase
+-[ RECORD 5 ]---------------------------
+email       | test123@example.com
+description | Alphanumeric local part
+
+-[ RECORD 1 ]---------------------------------------
+email       | a@example.com
+description | Shortest valid local part
+-[ RECORD 2 ]---------------------------------------
+email       | abcdefghijklmnopqrstuvwxyz@example.com
+description | Long but valid local part
+
+-[ RECORD 1 ]-----------------------------------------
+email       | !def!xyz%abc@example.com
+description | Special chars in local part
+-[ RECORD 2 ]-----------------------------------------
+email       | $A12345@example.com
+description | Dollar sign in local part
+-[ RECORD 3 ]-----------------------------------------
+email       | a@example.com
+description | Shortest valid local part
+-[ RECORD 4 ]-----------------------------------------
+email       | abcdefghijklmnopqrstuvwxyz@example.com
+description | Long but valid local part
+-[ RECORD 5 ]-----------------------------------------
+email       | customer/department@example.com
+description | Forward slash in local part
+-[ RECORD 6 ]-----------------------------------------
+email       | email@example.com
+description | Common domain
+-[ RECORD 7 ]-----------------------------------------
+email       | first-last@example.com
+description | Hyphen separator
+-[ RECORD 8 ]-----------------------------------------
+email       | first_last@example.com
+description | Underscore separator
+-[ RECORD 9 ]-----------------------------------------
+email       | firstname.lastname@example.com
+description | Standard name format
+-[ RECORD 10 ]----------------------------------------
+email       | POSTMASTER@EXAMPLE.COM
+description | Special postmaster address
+-[ RECORD 11 ]----------------------------------------
+email       | simple@example.com
+description | Basic email format
+-[ RECORD 12 ]----------------------------------------
+email       | test.email@example.com
+description | All lowercase
+-[ RECORD 13 ]----------------------------------------
+email       | Test.Email@Example.Com
+description | Mixed case everything
+-[ RECORD 14 ]----------------------------------------
+email       | test123@example.com
+description | Alphanumeric local part
+-[ RECORD 15 ]----------------------------------------
+email       | user+tag+sorting@example.com
+description | Multiple plus signs
+-[ RECORD 16 ]----------------------------------------
+email       | user.name+tag@example.com
+description | Plus tag format common in Gmail
+-[ RECORD 17 ]----------------------------------------
+email       | very.common@example.com
+description | Common format with dot
+-[ RECORD 18 ]----------------------------------------
+email       | "foo@bar"@example.com
+description | Quoted @ in local part
+-[ RECORD 19 ]----------------------------------------
+email       | "john.doe"@example.com
+description | Simple quoted name
+-[ RECORD 20 ]----------------------------------------
+email       | "very.unusual.@.unusual.com"@example.com
+description | Special chars in quotes
+
+-[ RECORD 1 ]---------------------------------
+email       | email@[123.123.123.123]
+description | IPv4 literal address
+-[ RECORD 2 ]---------------------------------
+email       | test@a.b.c.d.example.com
+description | Multiple short subdomains
+-[ RECORD 3 ]---------------------------------
+email       | email@example-one.com
+description | Hyphen in domain
+-[ RECORD 4 ]---------------------------------
+email       | email@example.co.jp
+description | Country code second-level domain
+-[ RECORD 5 ]---------------------------------
+email       | " "@example.org
+description | Quoted space as local part
+
+(0 rows)
+
+-[ RECORD 1 ]---------------------------------
+email       | email@[123.123.123.123]
+description | IPv4 literal address
+-[ RECORD 2 ]---------------------------------
+email       | test@a.b.c.d.example.com
+description | Multiple short subdomains
+-[ RECORD 3 ]---------------------------------
+email       | email@example-one.com
+description | Hyphen in domain
+-[ RECORD 4 ]---------------------------------
+email       | email@example.co.jp
+description | Country code second-level domain
+-[ RECORD 5 ]---------------------------------
+email       | POSTMASTER@EXAMPLE.COM
+description | Special postmaster address
+
+-[ RECORD 1 ]----------------------------------
+email  | POSTMASTER@EXAMPLE.COM
+domain | EXAMPLE.COM
+-[ RECORD 2 ]----------------------------------
+email  | Test.Email@Example.Com
+domain | Example.Com
+-[ RECORD 3 ]----------------------------------
+email  | email@[123.123.123.123]
+domain | [123.123.123.123]
+-[ RECORD 4 ]----------------------------------
+email  | test@a.b.c.d.example.com
+domain | a.b.c.d.example.com
+-[ RECORD 5 ]----------------------------------
+email  | email@example-one.com
+domain | example-one.com
+-[ RECORD 6 ]----------------------------------
+email  | email@example.co.jp
+domain | example.co.jp
+-[ RECORD 7 ]----------------------------------
+email  | !def!xyz%abc@example.com
+domain | example.com
+-[ RECORD 8 ]----------------------------------
+email  | $A12345@example.com
+domain | example.com
+-[ RECORD 9 ]----------------------------------
+email  | a@example.com
+domain | example.com
+-[ RECORD 10 ]---------------------------------
+email  | abcdefghijklmnopqrstuvwxyz@example.com
+domain | example.com
+
+-[ RECORD 1 ]-----+----------------------
+normalized_domain | example.com
+email_count       | 20
+-[ RECORD 2 ]-----+----------------------
+normalized_domain | example.org
+email_count       | 2
+-[ RECORD 3 ]-----+----------------------
+normalized_domain | example.co.jp
+email_count       | 1
+-[ RECORD 4 ]-----+----------------------
+normalized_domain | subdomain.example.com
+email_count       | 1
+-[ RECORD 5 ]-----+----------------------
+normalized_domain | [123.123.123.123]
+email_count       | 1
+-[ RECORD 6 ]-----+----------------------
+normalized_domain | example-one.com
+email_count       | 1
+-[ RECORD 7 ]-----+----------------------
+normalized_domain | a.b.c.d.example.com
+email_count       | 1
+
+-[ RECORD 1 ]-----+------------
+original_domain   | EXAMPLE.COM
+normalized_domain | example.com
+-[ RECORD 2 ]-----+------------
+original_domain   | Example.Com
+normalized_domain | example.com
+
+-[ RECORD 1 ]+-----
+tld          | com
+domain_count | 23
+-[ RECORD 2 ]+-----
+tld          | org
+domain_count | 2
+-[ RECORD 3 ]+-----
+tld          | jp
+domain_count | 1
+-[ RECORD 4 ]+-----
+tld          | 123]
+domain_count | 1
+
+(0 rows)
+
+(0 rows)
+
+-[ RECORD 1 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Sort  (cost=32.15..32.86 rows=283 width=64) (actual time=0.014..0.015 rows=7 loops=1)
+-[ RECORD 2 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN |   Sort Key: email
+-[ RECORD 3 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN |   Sort Method: quicksort  Memory: 25kB
+-[ RECORD 4 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN |   ->  Seq Scan on email_test  (cost=0.00..20.62 rows=283 width=64) (actual time=0.006..0.010 rows=7 loops=1)
+-[ RECORD 5 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN |         Filter: (email ># 'user@example.com'::email_addr)
+-[ RECORD 6 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN |         Rows Removed by Filter: 20
+-[ RECORD 7 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Planning Time: 0.013 ms
+-[ RECORD 8 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Execution Time: 0.021 ms
+
+-[ RECORD 1 ]-----------------------------------------
+email       | "foo@bar"@example.com
+description | Quoted @ in local part
+-[ RECORD 2 ]-----------------------------------------
+email       | "john.doe"@example.com
+description | Simple quoted name
+-[ RECORD 3 ]-----------------------------------------
+email       | "very.unusual.@.unusual.com"@example.com
+description | Special chars in quotes
+
+-[ RECORD 1 ]-+----------------------------
+email         | email@subdomain.example.com
+domain_length | 21
+-[ RECORD 2 ]-+----------------------------
+email         | test@a.b.c.d.example.com
+domain_length | 19
+-[ RECORD 3 ]-+----------------------------
+email         | email@[123.123.123.123]
+domain_length | 17
+-[ RECORD 4 ]-+----------------------------
+email         | email@example-one.com
+domain_length | 15
+-[ RECORD 5 ]-+----------------------------
+email         | email@example.co.jp
+domain_length | 13
+
+-[ RECORD 1 ]-----+-----------------------------------------
+email             | "very.unusual.@.unusual.com"@example.com
+local_part_length | 28
+-[ RECORD 2 ]-----+-----------------------------------------
+email             | abcdefghijklmnopqrstuvwxyz@example.com
+local_part_length | 26
+-[ RECORD 3 ]-----+-----------------------------------------
+email             | customer/department@example.com
+local_part_length | 19
+-[ RECORD 4 ]-----+-----------------------------------------
+email             | firstname.lastname@example.com
+local_part_length | 18
+-[ RECORD 5 ]-----+-----------------------------------------
+email             | user+tag+sorting@example.com
+local_part_length | 16
+
+-[ RECORD 1 ]-------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Sort  (cost=59.86..61.98 rows=850 width=32) (actual time=0.014..0.015 rows=27 loops=1)
+-[ RECORD 2 ]-------------------------------------------------------------------------------------------------------------
+QUERY PLAN |   Sort Key: email
+-[ RECORD 3 ]-------------------------------------------------------------------------------------------------------------
+QUERY PLAN |   Sort Method: quicksort  Memory: 26kB
+-[ RECORD 4 ]-------------------------------------------------------------------------------------------------------------
+QUERY PLAN |   ->  Seq Scan on email_test  (cost=0.00..18.50 rows=850 width=32) (actual time=0.001..0.003 rows=27 loops=1)
+-[ RECORD 5 ]-------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Planning Time: 0.009 ms
+-[ RECORD 6 ]-------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Execution Time: 0.019 ms
+
+-[ RECORD 1 ]----------------------------------------------------------------------------------------------------
+QUERY PLAN | Seq Scan on email_test  (cost=0.00..20.62 rows=4 width=32) (actual time=0.005..0.005 rows=0 loops=1)
+-[ RECORD 2 ]----------------------------------------------------------------------------------------------------
+QUERY PLAN |   Filter: (email = 'user@example.com'::email_addr)
+-[ RECORD 3 ]----------------------------------------------------------------------------------------------------
+QUERY PLAN |   Rows Removed by Filter: 27
+-[ RECORD 4 ]----------------------------------------------------------------------------------------------------
+QUERY PLAN | Planning Time: 0.009 ms
+-[ RECORD 5 ]----------------------------------------------------------------------------------------------------
+QUERY PLAN | Execution Time: 0.008 ms
+
+-[ RECORD 1 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Sort  (cost=32.15..32.86 rows=283 width=32) (actual time=0.011..0.011 rows=7 loops=1)
+-[ RECORD 2 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN |   Sort Key: email
+-[ RECORD 3 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN |   Sort Method: quicksort  Memory: 25kB
+-[ RECORD 4 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN |   ->  Seq Scan on email_test  (cost=0.00..20.62 rows=283 width=32) (actual time=0.005..0.009 rows=7 loops=1)
+-[ RECORD 5 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN |         Filter: (email ># 'user@example.com'::email_addr)
+-[ RECORD 6 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN |         Rows Removed by Filter: 20
+-[ RECORD 7 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Planning Time: 0.010 ms
+-[ RECORD 8 ]------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Execution Time: 0.014 ms
+
+-[ RECORD 1 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Aggregate  (cost=185.21..185.22 rows=1 width=8) (actual time=0.038..0.039 rows=1 loops=1)
+-[ RECORD 2 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN |   ->  Hash Join  (cost=29.12..176.18 rows=3612 width=0) (actual time=0.025..0.036 rows=29 loops=1)
+-[ RECORD 3 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN |         Hash Cond: (a.email = b.email)
+-[ RECORD 4 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN |         ->  Seq Scan on email_test a  (cost=0.00..18.50 rows=850 width=32) (actual time=0.001..0.002 rows=27 loops=1)
+-[ RECORD 5 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN |         ->  Hash  (cost=18.50..18.50 rows=850 width=32) (actual time=0.012..0.013 rows=27 loops=1)
+-[ RECORD 6 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN |               Buckets: 1024  Batches: 1  Memory Usage: 10kB
+-[ RECORD 7 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN |               ->  Seq Scan on email_test b  (cost=0.00..18.50 rows=850 width=32) (actual time=0.001..0.002 rows=27 loops=1)
+-[ RECORD 8 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Planning Time: 0.025 ms
+-[ RECORD 9 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Execution Time: 0.047 ms
+
+-[ RECORD 1 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Aggregate  (cost=10885.66..10885.67 rows=1 width=8) (actual time=0.400..0.401 rows=1 loops=1)
+-[ RECORD 2 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN |   ->  Nested Loop  (cost=0.00..10876.62 rows=3612 width=0) (actual time=0.004..0.399 rows=29 loops=1)
+-[ RECORD 3 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN |         Join Filter: (a.email ==# b.email)
+-[ RECORD 4 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN |         Rows Removed by Join Filter: 700
+-[ RECORD 5 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN |         ->  Seq Scan on email_test a  (cost=0.00..18.50 rows=850 width=32) (actual time=0.001..0.003 rows=27 loops=1)
+-[ RECORD 6 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN |         ->  Materialize  (cost=0.00..22.75 rows=850 width=32) (actual time=0.000..0.001 rows=27 loops=27)
+-[ RECORD 7 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN |               ->  Seq Scan on email_test b  (cost=0.00..18.50 rows=850 width=32) (actual time=0.001..0.002 rows=27 loops=1)
+-[ RECORD 8 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Planning Time: 0.016 ms
+-[ RECORD 9 ]---------------------------------------------------------------------------------------------------------------------------
+QUERY PLAN | Execution Time: 0.406 ms
+
+-[ RECORD 1 ]-----------------------------------------------------------------------------------------------------------
+QUERY PLAN | Aggregate  (cost=21.33..21.34 rows=1 width=8) (actual time=0.006..0.006 rows=1 loops=1)
+-[ RECORD 2 ]-----------------------------------------------------------------------------------------------------------
+QUERY PLAN |   ->  Seq Scan on email_test  (cost=0.00..20.62 rows=283 width=0) (actual time=0.002..0.005 rows=9 loops=1)
+-[ RECORD 3 ]-----------------------------------------------------------------------------------------------------------
+QUERY PLAN |         Filter: (email > 'user@example.com'::email_addr)
+-[ RECORD 4 ]-----------------------------------------------------------------------------------------------------------
+QUERY PLAN |         Rows Removed by Filter: 18
+-[ RECORD 5 ]-----------------------------------------------------------------------------------------------------------
+QUERY PLAN | Planning Time: 0.012 ms
+-[ RECORD 6 ]-----------------------------------------------------------------------------------------------------------
+QUERY PLAN | Execution Time: 0.010 ms
+
+-[ RECORD 1 ]-----------------------------------------------------------------------------------------------------------
+QUERY PLAN | Aggregate  (cost=21.33..21.34 rows=1 width=8) (actual time=0.009..0.009 rows=1 loops=1)
+-[ RECORD 2 ]-----------------------------------------------------------------------------------------------------------
+QUERY PLAN |   ->  Seq Scan on email_test  (cost=0.00..20.62 rows=283 width=0) (actual time=0.005..0.008 rows=7 loops=1)
+-[ RECORD 3 ]-----------------------------------------------------------------------------------------------------------
+QUERY PLAN |         Filter: (email ># 'user@example.com'::email_addr)
+-[ RECORD 4 ]-----------------------------------------------------------------------------------------------------------
+QUERY PLAN |         Rows Removed by Filter: 20
+-[ RECORD 5 ]-----------------------------------------------------------------------------------------------------------
+QUERY PLAN | Planning Time: 0.009 ms
+-[ RECORD 6 ]-----------------------------------------------------------------------------------------------------------
+QUERY PLAN | Execution Time: 0.013 ms
+
