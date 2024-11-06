@@ -206,6 +206,56 @@ email_addr_hash(const EMAIL_ADDR *addr)
 }
 
 /*
+ * Find the rightmost @ character that is not within quotes.
+ * Returns NULL if no valid @ character is found.
+ * Handles escaped quotes and validates quote structure.
+ */
+static const char *
+find_valid_at(const char *input_text)
+{
+    const char *at_pos = NULL;
+    const char *p = input_text;
+    bool in_quotes = false;
+    bool escaped = false;
+
+    /* Scan the entire string */
+    while (*p != '\0') {
+        if (escaped) {
+            /* Previous character was backslash - this character is escaped */
+            escaped = false;
+        } else if (*p == '\\') {
+            /* Start of escape sequence */
+            escaped = true;
+        } else if (*p == '"') {
+            /* Toggle quote state */
+            in_quotes = !in_quotes;
+        } else if (*p == '@' && !in_quotes) {
+            /* Found an @ outside of quotes */
+            at_pos = p;
+        }
+        p++;
+    }
+
+    /* Check for unterminated quotes */
+    if (in_quotes) {
+        ereport(ERROR,
+                (errcode(ERRCODE_INVALID_TEXT_REPRESENTATION),
+                 errmsg("unterminated quotes in email address: \"%s\"",
+                        input_text)));
+    }
+
+    /* Check for trailing backslash */
+    if (escaped) {
+        ereport(ERROR,
+                (errcode(ERRCODE_INVALID_TEXT_REPRESENTATION),
+                 errmsg("invalid trailing backslash in email address: \"%s\"",
+                        input_text)));
+    }
+
+    return at_pos;
+}
+
+/*
  * Input function: text representation to internal format
  */
 PG_FUNCTION_INFO_V1(email_addr_in);
@@ -215,7 +265,7 @@ email_addr_in(PG_FUNCTION_ARGS)
     char *input_text = PG_GETARG_CSTRING(0);
 
     /* Find the @ character */
-    const char *at_pos = strchr(input_text, '@');
+    const char *at_pos = find_valid_at(input_text);
     if (at_pos == NULL)
         ereport(ERROR,
                 (errcode(ERRCODE_INVALID_TEXT_REPRESENTATION),
