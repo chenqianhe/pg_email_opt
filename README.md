@@ -109,3 +109,8 @@ Email address normalization follows these rules:
 2. Unquoted local parts are preserved as-is
 3. Quoted local parts are unquoted if possible
 4. Comments are removed
+
+## Source
+
+- Email Syntax: https://www.wikiwand.com/en/articles/Email_address
+
